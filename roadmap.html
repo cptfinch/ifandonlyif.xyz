@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap — if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / Roadmap</p>
+        <h1>Roadmap</h1>
+
+        <p>Where we are, where we're going. This is a living document.</p>
+
+        <h2>Phase 1 — Static Proof Gym (now)</h2>
+        <p>A static site with lessons and exercises. You copy Lean 4 code into <a href="https://live.lean-lang.org/" target="_blank">Lean 4 Web</a> or your local VS Code to check proofs. Low friction, zero infrastructure.</p>
+        <ul style="color: var(--text-muted); margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+            <li><strong style="color: var(--accent);">Done:</strong> Logic track (6 exercises)</li>
+            <li><strong style="color: var(--accent);">Done:</strong> Natural Numbers track (5 exercises)</li>
+            <li><strong style="color: var(--text-muted);">Next:</strong> Sets track</li>
+            <li><strong style="color: var(--text-muted);">Next:</strong> Functions track</li>
+            <li><strong style="color: var(--text-muted);">Next:</strong> More exercises per track</li>
+        </ul>
+
+        <h2>Phase 2 — Embedded Editor</h2>
+        <p>Embed a Lean 4 code editor directly in each exercise page. Type your proof, see feedback inline. No copy-pasting needed.</p>
+        <p>Based on <a href="https://github.com/leanprover-community/lean4web" target="_blank">lean4web</a> — a Monaco editor frontend that talks to a Lean 4 language server via WebSocket. Requires hosting a Lean server (Docker + Nginx + pm2).</p>
+        <ul style="color: var(--text-muted); margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+            <li>Self-host lean4web on Hetzner (cx23, 2 vCPU, 4GB)</li>
+            <li>Embed editor iframe in exercise pages</li>
+            <li>Pre-populate with exercise skeleton code</li>
+            <li>Syntax highlighting, error messages, goal state visible</li>
+        </ul>
+
+        <h2>Phase 3 — Game Engine</h2>
+        <p>Full integration with <a href="https://github.com/leanprover-community/lean4game" target="_blank">lean4game</a> — the engine behind the Natural Number Game. Structured levels, tactic introduction, guided proof construction.</p>
+        <ul style="color: var(--text-muted); margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+            <li>Write exercises as Lean 4 game levels</li>
+            <li>Tactic panel shows available tactics per level</li>
+            <li>Goal state updates live as you type</li>
+            <li>Bubblewrap sandboxing for security</li>
+            <li>~20 concurrent users per server node</li>
+        </ul>
+
+        <h2>Phase 4 — Community</h2>
+        <p>Progress tracking, user accounts, community-contributed exercises, difficulty ratings, solution discussions.</p>
+        <ul style="color: var(--text-muted); margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+            <li>User accounts with proof history</li>
+            <li>Community exercise submissions</li>
+            <li>Difficulty voting (like Project Euler)</li>
+            <li>Solution discussions (after you've proved it)</li>
+            <li>Track completion badges</li>
+        </ul>
+
+        <h2>Architecture</h2>
+        <pre>
+Phase 1 (now):
+  Static HTML/CSS on Cloudflare Pages
+  User copies code to Lean 4 Web or local VS Code
+
+Phase 2:
+  Cloudflare Pages (frontend)
+    |
+    | WebSocket
+    v
+  Hetzner cx23 (lean4web server)
+    - Docker: Lean 4 + Mathlib
+    - Nginx reverse proxy
+    - pm2 process manager
+
+Phase 3:
+  Cloudflare Pages (frontend)
+    |
+    | WebSocket
+    v
+  Hetzner (lean4game server)
+    - Node.js relay server
+    - Lean 4 gameserver binary
+    - Bubblewrap sandbox per user
+    - ~20 concurrent users per node</pre>
+
+        <h2>Tracks Plan</h2>
+        <pre>
+1. Logic          ████████████ done (6 exercises)
+2. Numbers        ████████████ done (5 exercises)
+3. Sets           ░░░░░░░░░░░░ planned
+4. Functions      ░░░░░░░░░░░░ planned
+5. Algebra        ░░░░░░░░░░░░ planned
+6. Real Analysis  ░░░░░░░░░░░░ planned
+7. Topology       ░░░░░░░░░░░░ future
+8. Combinatorics  ░░░░░░░░░░░░ future
+9. Number Theory  ░░░░░░░░░░░░ future</pre>
+
+        <div class="exercise-nav">
+            <a href="/">&larr; Home</a>
+            <a href="tracks/logic/index.html">Start proving &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+</body>
+</html>

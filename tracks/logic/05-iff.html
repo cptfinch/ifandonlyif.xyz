@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>If and Only If — if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Logic</a> / If and Only If</p>
+        <h1>05 &mdash; If and Only If</h1>
+
+        <section class="math-section">
+            <h2>The Mathematics</h2>
+            <p>This is the one. The namesake. The whole reason this site is called what it's called.</p>
+
+            <p>The biconditional <strong>P &harr; Q</strong> (read "P if and only if Q") means two things at once:</p>
+            <ul>
+                <li><strong>P &rarr; Q</strong> &mdash; "if P then Q" (the forward direction)</li>
+                <li><strong>Q &rarr; P</strong> &mdash; "if Q then P" (the backward direction)</li>
+            </ul>
+
+            <p>In other words, P and Q are <em>logically equivalent</em>. They're true in exactly the same situations. Mathematicians abbreviate "if and only if" as <strong>iff</strong> &mdash; and that little double arrow &harr; (or &iff;) packs a surprising amount of power into two tiny strokes.</p>
+
+            <p>When you see "P iff Q" in a textbook, you know you're looking at two implications bundled together. Every iff proof has two parts: prove the forward direction, then prove the backward direction.</p>
+
+            <p>In Lean 4:</p>
+            <ul>
+                <li><code>constructor</code> &mdash; splits <code>P &harr; Q</code> into two goals: <code>P &rarr; Q</code> and <code>Q &rarr; P</code></li>
+                <li><code>h.mp</code> &mdash; extracts the forward direction from <code>h : P &harr; Q</code> (gives <code>P &rarr; Q</code>)</li>
+                <li><code>h.mpr</code> &mdash; extracts the backward direction (gives <code>Q &rarr; P</code>)</li>
+            </ul>
+
+            <p>The names <code>mp</code> and <code>mpr</code> come from <em>modus ponens</em> and <em>modus ponens reverse</em> &mdash; the classical rule of inference that lets you go from "if P then Q" and "P" to "Q".</p>
+        </section>
+
+        <section class="lean-section">
+            <h2>The Lean Proof</h2>
+            <p>Let's start with a simple example. If we already have <code>h : P &harr; Q</code> and <code>hp : P</code>, we can get a proof of Q:</p>
+<pre><code>theorem iff_mp (P Q : Prop) (h : P &harr; Q) (hp : P) : Q := by
+  exact h.mp hp</code></pre>
+            <p>The <code>.mp</code> field extracts the forward implication, and we apply it to <code>hp</code>.</p>
+
+            <p>To <em>build</em> an iff from scratch, use <code>constructor</code> to split it into its two halves:</p>
+<pre><code>theorem iff_self (P : Prop) : P &harr; P := by
+  constructor
+  &middot; intro hp
+    exact hp
+  &middot; intro hp
+    exact hp</code></pre>
+            <p>Both directions are the identity &mdash; P implies P. Not the most thrilling theorem, but it shows the shape of every iff proof: <code>constructor</code>, then handle each direction.</p>
+        </section>
+
+        <section class="exercise-section">
+            <h2>Your Turn</h2>
+            <p>Prove that iff is commutative. If <code>P &harr; Q</code>, then <code>Q &harr; P</code>. You'll need to split the goal and swap the two directions.</p>
+<pre><code>theorem iff_comm (P Q : Prop) (h : P &harr; Q) : Q &harr; P := by
+  sorry</code></pre>
+            <p>Think about it: if <code>h</code> gives you both <code>P &rarr; Q</code> and <code>Q &rarr; P</code>, and you need to prove <code>Q &rarr; P</code> and <code>P &rarr; Q</code>... it's just a swap.</p>
+        </section>
+
+        <details class="hint">
+            <summary>Hint</summary>
+            <div class="hint-content">
+                <p>Use <code>constructor</code> to split <code>Q &harr; P</code> into two goals.</p>
+                <p>The first goal is <code>Q &rarr; P</code> &mdash; that's <code>h.mpr</code> (the backward direction of <code>h</code>).</p>
+                <p>The second goal is <code>P &rarr; Q</code> &mdash; that's <code>h.mp</code> (the forward direction of <code>h</code>).</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre><code>theorem iff_comm (P Q : Prop) (h : P &harr; Q) : Q &harr; P := by
+  constructor
+  &middot; exact h.mpr
+  &middot; exact h.mp</code></pre>
+                <p>We split the goal with <code>constructor</code>, then hand over the backward direction as the new forward direction and vice versa. The two halves of the biconditional simply trade places.</p>
+            </div>
+        </details>
+
+        <section class="exercise-section">
+            <h2>Bonus: Build an Iff from Scratch</h2>
+            <p>Here's a meatier challenge. Prove that <code>P &and; Q &harr; Q &and; P</code> without any hypothesis &mdash; build the whole biconditional yourself. You'll need to combine what you learned about conjunction in the previous exercise with your new iff skills.</p>
+<pre><code>theorem and_iff_and_comm (P Q : Prop) : P &and; Q &harr; Q &and; P := by
+  sorry</code></pre>
+        </section>
+
+        <details class="hint">
+            <summary>Bonus Hint</summary>
+            <div class="hint-content">
+                <p>Use <code>constructor</code> to split the iff. Each direction is an implication, so use <code>intro</code> to get the hypothesis.</p>
+                <p>Then destructure the conjunction with angle brackets: <code>intro &langle;hp, hq&rangle;</code> gives you both parts.</p>
+                <p>Rebuild the conjunction with the parts swapped: <code>exact &langle;hq, hp&rangle;</code>.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Bonus Solution</summary>
+            <div class="hint-content">
+<pre><code>theorem and_iff_and_comm (P Q : Prop) : P &and; Q &harr; Q &and; P := by
+  constructor
+  &middot; intro &langle;hp, hq&rangle;
+    exact &langle;hq, hp&rangle;
+  &middot; intro &langle;hq, hp&rangle;
+    exact &langle;hp, hq&rangle;</code></pre>
+                <p>Each direction destructures a conjunction and rebuilds it with the components swapped. The iff just bundles both swaps together. Beautiful symmetry.</p>
+            </div>
+        </details>
+
+        <div class="exercise-nav">
+            <a href="04-or.html">&larr; Disjunction (or)</a>
+            <a href="06-negation.html">Negation &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+</body>
+</html>

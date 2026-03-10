@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplication distributes over addition — if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Natural Numbers</a> / Multiplication distributes over addition</p>
+        <h1>Multiplication distributes over addition</h1>
+
+        <p>The distributive law connects addition and multiplication:</p>
+
+<pre>a * (b + c) = a * b + a * c</pre>
+
+        <p>This is the property that makes arithmetic work as a coherent system. Without it, multiplication would just be a separate operation with no relationship to addition. With it, you get algebra.</p>
+
+        <p>In Lean 4, multiplication on natural numbers is defined by recursion on the second argument, just like addition:</p>
+
+<pre>def Nat.mul : Nat → Nat → Nat
+  | _, Nat.zero   => Nat.zero
+  | n, Nat.succ m => Nat.mul n m + n</pre>
+
+        <p>So <code>a * 0 = 0</code> by definition, and <code>a * succ m = a * m + a</code>. Proving distributivity requires combining everything we have learned: induction, associativity, commutativity, and careful rewriting.</p>
+
+        <h2>Exercise</h2>
+
+<pre>theorem my_mul_add (a b c : Nat) : a * (b + c) = a * b + a * c := by
+  sorry</pre>
+
+        <details class="hint">
+            <summary>Hint 1</summary>
+            <div class="hint-content">
+                <p>Induct on <code>c</code>, since both addition and multiplication recurse on the second argument. In the base case, <code>a * (b + 0) = a * b + a * 0</code> simplifies by the definitions of addition and multiplication.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Hint 2</summary>
+            <div class="hint-content">
+                <p>In the successor case, you need to show <code>a * (b + succ c) = a * b + a * succ c</code>. Start by rewriting <code>b + succ c</code> using <code>Nat.add_succ</code>, then unfold <code>a * succ (...)</code> using <code>Nat.mul_succ</code>. You will need associativity of addition to rearrange the terms, and the induction hypothesis to handle the recursive part.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Hint 3</summary>
+            <div class="hint-content">
+                <p>The key lemma is <code>Nat.mul_succ (a n : Nat) : a * succ n = a * n + a</code>. Combined with <code>Nat.add_succ</code> and <code>Nat.add_assoc</code>, this gets you through the inductive step.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution (one-liner)</summary>
+            <div class="hint-content">
+<pre>theorem my_mul_add (a b c : Nat) : a * (b + c) = a * b + a * c := by
+  omega</pre>
+                <p>The <code>omega</code> tactic handles this because it is a linear arithmetic identity. But this teaches you nothing about how the proof actually works.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution (by induction)</summary>
+            <div class="hint-content">
+<pre>theorem my_mul_add (a b c : Nat) : a * (b + c) = a * b + a * c := by
+  induction c with
+  | zero => simp
+  | succ c ih =>
+    simp [Nat.add_succ, Nat.mul_succ]
+    rw [ih]
+    omega</pre>
+                <p>Or fully expanded, without <code>omega</code> in the inductive step:</p>
+<pre>theorem my_mul_add (a b c : Nat) : a * (b + c) = a * b + a * c := by
+  induction c with
+  | zero =>
+    -- a * (b + 0) = a * b + a * 0
+    simp [Nat.mul_zero, Nat.add_zero]
+  | succ c ih =>
+    -- Goal: a * (b + succ c) = a * b + a * succ c
+    rw [Nat.add_succ]       -- a * succ (b + c) = ...
+    rw [Nat.mul_succ]       -- a * (b + c) + a = ...
+    rw [Nat.mul_succ]       -- ... = a * b + (a * c + a)
+    rw [ih]                 -- a * b + a * c + a = a * b + (a * c + a)
+    rw [Nat.add_assoc]      -- done</pre>
+                <p>Each <code>rw</code> step transforms the goal using a single lemma. Reading this proof top to bottom, you can see exactly how the two sides are brought into alignment.</p>
+            </div>
+        </details>
+
+        <h2>What you have proved</h2>
+
+        <p>With distributivity, you now have the core of <strong>semiring</strong> arithmetic for natural numbers. Across this track you have established:</p>
+
+        <ul style="color: var(--text-muted); line-height: 2; margin: 1rem 0 1rem 1.5rem;">
+            <li><code>0 + n = n</code> (additive identity, left)</li>
+            <li><code>(a + b) + c = a + (b + c)</code> (associativity of addition)</li>
+            <li><code>a + b = b + a</code> (commutativity of addition)</li>
+            <li><code>0 &lt; 2 ^ n</code> (positivity via induction)</li>
+            <li><code>a * (b + c) = a * b + a * c</code> (left distributivity)</li>
+        </ul>
+
+        <p>These are not just exercises — they are the actual foundations of arithmetic, proved from nothing but the definition of natural numbers and the principle of induction.</p>
+
+        <h2>Key takeaways</h2>
+
+        <p><strong>Distributivity combines everything.</strong> This proof uses induction, definitional unfolding, associativity, and careful rewriting. It is a mini-capstone for natural number arithmetic.</p>
+        <p><strong><code>rw</code> gives you fine control.</strong> Unlike <code>simp</code>, which applies many lemmas at once, <code>rw</code> applies exactly one lemma at a time. This makes proofs longer but more transparent.</p>
+        <p><strong>The <code>ring</code> tactic</strong> can also prove identities like this for any commutative semiring. Once you know the theory, automation becomes a tool rather than a crutch.</p>
+
+        <div class="exercise-nav">
+            <a href="04-induction.html">&larr; Induction</a>
+            <a href="../../index.html">Back to all tracks &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Negation and Contradiction — if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Logic</a> / Negation</p>
+        <h1>06 &mdash; Negation and Contradiction</h1>
+
+        <section class="math-section">
+            <h2>The Mathematics</h2>
+            <p>Negation is where logic gets its teeth. The proposition <strong>&not;P</strong> (read "not P") means "P is false." But what does that actually <em>mean</em> in formal logic?</p>
+
+            <p>Here's the key insight: in Lean 4, <strong>&not;P is defined as P &rarr; False</strong>. That's it. "P is false" literally means "if P were true, we could derive a contradiction." It's an implication to the impossible.</p>
+
+            <p><code>False</code> is a proposition with no proof. Nothing can prove <code>False</code> &mdash; that's what makes it false. But if you ever <em>do</em> get a proof of <code>False</code>, you can prove anything (this is the principle of explosion, or <em>ex falso quodlibet</em>).</p>
+
+            <p>The key tactics for working with negation:</p>
+            <ul>
+                <li><code>intro h</code> &mdash; since &not;P is really P &rarr; False, you can <code>intro</code> to assume P and then try to derive False</li>
+                <li><code>contradiction</code> &mdash; closes a goal when your hypotheses contain an obvious contradiction (like <code>hp : P</code> and <code>hnp : &not;P</code>)</li>
+                <li><code>absurd hp hnp</code> &mdash; given <code>hp : P</code> and <code>hnp : &not;P</code>, produces a proof of anything</li>
+                <li><code>exact hnp hp</code> &mdash; since <code>hnp : &not;P</code> is really <code>hnp : P &rarr; False</code>, you can just apply it to <code>hp : P</code> to get <code>False</code></li>
+            </ul>
+
+            <p>That last point is worth sitting with. Because &not;P is a <em>function</em> from P to False, you can literally <em>call it</em> on a proof of P. Negation is just function application.</p>
+        </section>
+
+        <section class="lean-section">
+            <h2>The Lean Proof</h2>
+            <p>Let's see negation in action. Here's a proof that P and &not;P can't both be true:</p>
+<pre><code>theorem not_and_self (P : Prop) (hp : P) (hnp : &not;P) : False := by
+  exact hnp hp</code></pre>
+            <p>Since <code>hnp</code> is really a function <code>P &rarr; False</code>, we just feed it <code>hp</code>. Out comes <code>False</code>.</p>
+
+            <p>We could also write this with <code>contradiction</code>:</p>
+<pre><code>theorem not_and_self' (P : Prop) (hp : P) (hnp : &not;P) : False := by
+  contradiction</code></pre>
+            <p>The <code>contradiction</code> tactic spots that <code>hp</code> and <code>hnp</code> are contradictory and closes the goal automatically. It's convenient, but understanding the function-application version gives you deeper insight.</p>
+        </section>
+
+        <section class="exercise-section">
+            <h2>Your Turn</h2>
+            <p>Prove double negation introduction: if P is true, then &not;&not;P (it's not the case that P is false). Remember, &not;&not;P unfolds to <code>(P &rarr; False) &rarr; False</code>. So you need to assume <code>P &rarr; False</code> and derive <code>False</code>.</p>
+<pre><code>theorem not_not_intro (P : Prop) (hp : P) : &not;&not;P := by
+  sorry</code></pre>
+            <p>You already have <code>hp : P</code>. If someone gives you a function that turns P into False... well, you have a P right there.</p>
+        </section>
+
+        <details class="hint">
+            <summary>Hint</summary>
+            <div class="hint-content">
+                <p>The goal <code>&not;&not;P</code> is really <code>(P &rarr; False) &rarr; False</code>. So start with <code>intro hnp</code> to assume <code>hnp : &not;P</code> (i.e., <code>hnp : P &rarr; False</code>).</p>
+                <p>Now your goal is <code>False</code>, and you have <code>hp : P</code> and <code>hnp : P &rarr; False</code>. Apply the function to the argument.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre><code>theorem not_not_intro (P : Prop) (hp : P) : &not;&not;P := by
+  intro hnp
+  exact hnp hp</code></pre>
+                <p>We assume <code>hnp : P &rarr; False</code> and then apply it to <code>hp : P</code> to get <code>False</code>. The negation <em>is</em> a function, so we just call it. That's the whole proof.</p>
+            </div>
+        </details>
+
+        <section class="exercise-section">
+            <h2>Bonus: Contraposition</h2>
+            <p>Here's a classic pattern: if P implies Q, and Q is false, then P must be false too. This is <em>contraposition</em> &mdash; one of the most useful proof techniques in all of mathematics.</p>
+<pre><code>theorem contra (P Q : Prop) (hpq : P &rarr; Q) (hnq : &not;Q) : &not;P := by
+  sorry</code></pre>
+            <p>Think about it as a chain: if P were true, then Q would be true (by <code>hpq</code>), but Q is false (by <code>hnq</code>). Contradiction. So P can't be true.</p>
+        </section>
+
+        <details class="hint">
+            <summary>Bonus Hint</summary>
+            <div class="hint-content">
+                <p>The goal <code>&not;P</code> is <code>P &rarr; False</code>. So <code>intro hp</code> to assume <code>hp : P</code>.</p>
+                <p>Now chain: apply <code>hpq</code> to <code>hp</code> to get a proof of Q. Then apply <code>hnq</code> to that proof of Q to get False.</p>
+                <p>You can do this in one step: <code>exact hnq (hpq hp)</code>.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Bonus Solution</summary>
+            <div class="hint-content">
+<pre><code>theorem contra (P Q : Prop) (hpq : P &rarr; Q) (hnq : &not;Q) : &not;P := by
+  intro hp
+  exact hnq (hpq hp)</code></pre>
+                <p>We assume P, use <code>hpq</code> to get Q, and then use <code>hnq</code> (which is <code>Q &rarr; False</code>) to reach False. It's function composition: <code>hnq &circ; hpq</code> is a function from P to False, which is exactly &not;P. Elegant.</p>
+            </div>
+        </details>
+
+        <div class="exercise-nav">
+            <a href="05-iff.html">&larr; If and only if</a>
+            <a href="../numbers/index.html">Natural Numbers track &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+</body>
+</html>

@@ -3,48 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>If and Only If</title>
-    <meta name="description" content="Mathematical logic and reasoning. If and only if.">
+    <title>if and only if — Learn Mathematics by Proving It</title>
+    <meta name="description" content="A progressive Lean 4 proof gym. Learn mathematics by writing formal proofs. From basic logic to real analysis.">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Georgia', serif;
-            background: #0a0a0a;
-            color: #e8e8e8;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .container {
-            text-align: center;
-            max-width: 600px;
-            padding: 2rem;
-        }
-        h1 {
-            font-size: 3rem;
-            font-weight: 400;
-            letter-spacing: 0.02em;
-            margin-bottom: 1rem;
-        }
-        .symbol {
-            font-size: 4rem;
-            margin: 2rem 0;
-            opacity: 0.7;
-        }
-        p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #999;
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="symbol">⟺</div>
-        <h1>if and only if</h1>
-        <p>Coming soon.</p>
-    </div>
+    <nav>
+        <a href="/" class="logo">⟺ iff</a>
+        <div class="nav-links">
+            <a href="#tracks">Tracks</a>
+            <a href="roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <p class="hero-tag">A Lean 4 Proof Gym</p>
+            <h1>Learn mathematics<br>by proving it.</h1>
+            <p class="hero-sub">Progressive exercises in formal proof. Start from <code>True</code>, build to real analysis. You don't understand a theorem until you've proved it yourself.</p>
+            <div class="hero-actions">
+                <a href="tracks/logic/index.html" class="btn btn-primary">Start with Logic</a>
+                <a href="#tracks" class="btn btn-secondary">Browse Tracks</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="how-it-works">
+        <h2>How it works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <h3>Read the mathematics</h3>
+                <p>Each exercise explains the concept — what the theorem means, why it matters, and the intuition behind it.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <h3>Write the proof</h3>
+                <p>Translate your understanding into a formal Lean 4 proof. Start with the skeleton, fill in the tactics.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <h3>Check it compiles</h3>
+                <p>Paste into <a href="https://live.lean-lang.org/" target="_blank">Lean 4 Web</a> or your local VS Code. If Lean accepts it, you've proved it.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="tracks" class="tracks">
+        <h2>Tracks</h2>
+        <p class="tracks-intro">Each track is a sequence of lessons and exercises, ordered by difficulty. Learn the maths, then prove it.</p>
+        <div class="track-grid">
+            <a href="tracks/logic/index.html" class="track-card track-available">
+                <div class="track-icon">&#x2227; &#x2228; &#xAC;</div>
+                <h3>Logic</h3>
+                <p>Propositional logic, implications, if-and-only-if, negation, classical reasoning.</p>
+                <span class="track-status">6 exercises</span>
+            </a>
+            <a href="tracks/numbers/index.html" class="track-card track-available">
+                <div class="track-icon">&#x2115; &#x2192; &#x2124;</div>
+                <h3>Natural Numbers</h3>
+                <p>Peano axioms, induction, addition, multiplication, ordering.</p>
+                <span class="track-status">5 exercises</span>
+            </a>
+            <a href="tracks/sets/index.html" class="track-card track-coming">
+                <div class="track-icon">&#x2208; &#x222A; &#x2229;</div>
+                <h3>Sets</h3>
+                <p>Membership, subsets, union, intersection, complements, power sets.</p>
+                <span class="track-status">coming soon</span>
+            </a>
+            <a href="tracks/functions/index.html" class="track-card track-coming">
+                <div class="track-icon">f : A &#x2192; B</div>
+                <h3>Functions</h3>
+                <p>Injectivity, surjectivity, composition, inverse functions.</p>
+                <span class="track-status">coming soon</span>
+            </a>
+            <a href="tracks/algebra/index.html" class="track-card track-coming">
+                <div class="track-icon">G &#xD7; H</div>
+                <h3>Algebra</h3>
+                <p>Groups, rings, homomorphisms, quotients.</p>
+                <span class="track-status">coming soon</span>
+            </a>
+            <a href="tracks/analysis/index.html" class="track-card track-coming">
+                <div class="track-icon">&#x3B5; &#x2192; 0</div>
+                <h3>Real Analysis</h3>
+                <p>Limits, continuity, sequences, series, the reals.</p>
+                <span class="track-status">coming soon</span>
+            </a>
+        </div>
+    </section>
+
+    <section class="prerequisites">
+        <h2>What you need</h2>
+        <div class="prereq-grid">
+            <div class="prereq">
+                <h3>Mathematics</h3>
+                <p>None beyond basic arithmetic. We teach the maths as we go. That's the point.</p>
+            </div>
+            <div class="prereq">
+                <h3>Programming</h3>
+                <p>Helpful but not required. If you've used any programming language, Lean's syntax will feel familiar.</p>
+            </div>
+            <div class="prereq">
+                <h3>Tools</h3>
+                <p>A browser. Use <a href="https://live.lean-lang.org/" target="_blank">Lean 4 Web</a> to check your proofs. Or install <a href="https://leanprover-community.github.io/get_started.html" target="_blank">Lean 4 + VS Code</a> locally for a better experience.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>
+            <strong>if and only if</strong> is open source.
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a>
+        </p>
+        <p class="footer-sub">Built with Lean 4 and stubbornness. An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
 </body>
 </html>

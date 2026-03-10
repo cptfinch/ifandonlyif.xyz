@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Addition is commutative — if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Natural Numbers</a> / Addition is commutative</p>
+        <h1>Addition is commutative</h1>
+
+        <p>Commutativity of addition says <code>a + b = b + a</code>. This is one of those facts that seems too obvious to need a proof — until you try to prove it from the definition of addition and realise it is genuinely harder than associativity.</p>
+
+        <p>The difficulty is that <code>Nat.add</code> recurses on its <em>second</em> argument. So <code>a + succ b</code> unfolds nicely (to <code>succ (a + b)</code>), but <code>succ a + b</code> does not. To handle the successor on the left, you need the lemma <code>Nat.succ_add</code>:</p>
+
+<pre>Nat.succ_add (n m : Nat) : succ n + m = succ (n + m)</pre>
+
+        <p>Together with <code>Nat.zero_add</code> (which we proved in exercise 01) and <code>Nat.add_succ</code>, these lemmas let you shuffle successors between left and right until both sides match.</p>
+
+        <h2>Exercise</h2>
+
+<pre>theorem my_add_comm (a b : Nat) : a + b = b + a := by
+  sorry</pre>
+
+        <details class="hint">
+            <summary>Hint 1</summary>
+            <div class="hint-content">
+                <p>Induct on <code>b</code>. In the base case you need <code>a + 0 = 0 + a</code>. The left side reduces by definition; the right side is <code>Nat.zero_add</code>.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Hint 2</summary>
+            <div class="hint-content">
+                <p>In the successor case, you need to show <code>a + succ b = succ b + a</code>. Use <code>Nat.add_succ</code> to rewrite the left side and <code>Nat.succ_add</code> to rewrite the right side. Both become <code>succ (something)</code>, and the induction hypothesis closes the gap.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution (one-liner)</summary>
+            <div class="hint-content">
+<pre>theorem my_add_comm (a b : Nat) : a + b = b + a := by
+  omega</pre>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution (by induction)</summary>
+            <div class="hint-content">
+<pre>theorem my_add_comm (a b : Nat) : a + b = b + a := by
+  induction b with
+  | zero => simp
+  | succ b ih =>
+    simp [Nat.add_succ, Nat.succ_add]
+    exact ih</pre>
+                <p>In the base case, <code>simp</code> handles <code>a + 0 = 0 + a</code> using <code>Nat.add_zero</code> and <code>Nat.zero_add</code>. In the successor case, <code>Nat.add_succ</code> rewrites <code>a + succ b</code> to <code>succ (a + b)</code>, and <code>Nat.succ_add</code> rewrites <code>succ b + a</code> to <code>succ (b + a)</code>. Then <code>ih : a + b = b + a</code> finishes it.</p>
+            </div>
+        </details>
+
+        <h2>Key takeaways</h2>
+
+        <p><strong>Commutativity is harder than associativity.</strong> Associativity only needs induction on the recursion variable. Commutativity needs auxiliary lemmas (<code>zero_add</code>, <code>succ_add</code>) because you must move constructors across the operator.</p>
+        <p><strong><code>Nat.succ_add</code> and <code>Nat.add_succ</code></strong> are the two workhorses for natural number proofs. Know them by name — you will use them constantly.</p>
+        <p><strong>Building on earlier results.</strong> This proof depends on <code>zero_add</code> from exercise 01. Mathematics is cumulative: each theorem stands on the ones before it.</p>
+
+        <div class="exercise-nav">
+            <a href="02-add-assoc.html">&larr; Addition is associative</a>
+            <a href="04-induction.html">Next: Induction &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+</body>
+</html>

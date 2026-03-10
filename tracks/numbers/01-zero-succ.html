@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero and successor — if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Natural Numbers</a> / Zero and successor</p>
+        <h1>Zero and successor</h1>
+
+        <p>In Lean 4, the natural numbers are defined as an <strong>inductive type</strong> with exactly two constructors:</p>
+
+<pre>inductive Nat where
+  | zero : Nat
+  | succ (n : Nat) : Nat</pre>
+
+        <p>Every natural number is either <code>Nat.zero</code> (which we write as <code>0</code>) or <code>Nat.succ n</code> for some natural number <code>n</code> (which is <code>n + 1</code>). There is nothing else. The number 3, for instance, is <code>Nat.succ (Nat.succ (Nat.succ Nat.zero))</code>.</p>
+
+        <p>Addition on natural numbers is defined recursively. In Lean 4's core library, <code>Nat.add</code> is defined by pattern matching on the <strong>second</strong> argument:</p>
+
+<pre>def Nat.add : Nat → Nat → Nat
+  | n, Nat.zero   => n
+  | n, Nat.succ m => Nat.succ (Nat.add n m)</pre>
+
+        <p>This means <code>n + 0</code> reduces to <code>n</code> <em>by definition</em>. But <code>0 + n</code> does <em>not</em> reduce directly — it requires a proof. This is a subtle but important point: definitional equality depends on which argument the recursion is over.</p>
+
+        <h2>Warm-up</h2>
+
+        <p>Let's first verify that Lean understands concrete numbers. The <code>rfl</code> tactic proves any goal of the form <code>a = a</code> — it checks that both sides are <strong>definitionally equal</strong>.</p>
+
+<pre>example : Nat.succ (Nat.succ Nat.zero) = 2 := by rfl</pre>
+
+        <p>Both sides reduce to the same thing, so <code>rfl</code> closes the goal immediately.</p>
+
+        <h2>Exercise</h2>
+
+        <p>Now prove that adding zero on the left does nothing. This is the theorem <code>Nat.zero_add</code> from Lean's core library. Since addition recurses on the second argument, <code>0 + n</code> does not simplify by definition — you need a tactic.</p>
+
+<pre>theorem zero_add (n : Nat) : 0 + n = n := by
+  sorry</pre>
+
+        <details class="hint">
+            <summary>Hint 1</summary>
+            <div class="hint-content">
+                <p>The <code>simp</code> tactic can close this goal. It applies a collection of simplification lemmas, including <code>Nat.zero_add</code> from the library.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Hint 2</summary>
+            <div class="hint-content">
+                <p>You can also prove this by induction on <code>n</code>. The base case <code>0 + 0 = 0</code> holds by <code>rfl</code>, and the inductive step follows from the definition of addition plus the induction hypothesis.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+                <p>The simplest proof:</p>
+<pre>theorem zero_add (n : Nat) : 0 + n = n := by
+  simp</pre>
+                <p>Or, citing the library lemma directly:</p>
+<pre>theorem zero_add (n : Nat) : 0 + n = n := by
+  exact Nat.zero_add n</pre>
+                <p>Or, by induction — the proof Lean's library essentially uses:</p>
+<pre>theorem zero_add (n : Nat) : 0 + n = n := by
+  induction n with
+  | zero => rfl
+  | succ n ih => simp [Nat.add_succ, ih]</pre>
+            </div>
+        </details>
+
+        <h2>Key takeaways</h2>
+
+        <p><strong><code>rfl</code></strong> proves goals where both sides are definitionally equal — no lemmas needed, just computation.</p>
+        <p><strong><code>simp</code></strong> applies a library of simplification lemmas to rewrite the goal. It is powerful but sometimes opaque — you don't always see what it did.</p>
+        <p><strong>Definitional equality is asymmetric in practice.</strong> Because <code>Nat.add</code> recurses on its second argument, <code>n + 0 = n</code> is true by <code>rfl</code>, but <code>0 + n = n</code> requires a proof.</p>
+
+        <div class="exercise-nav">
+            <a href="index.html">&larr; Natural Numbers</a>
+            <a href="02-add-assoc.html">Next: Addition is associative &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+</body>
+</html>

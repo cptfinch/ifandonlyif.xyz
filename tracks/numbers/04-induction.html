@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Induction — if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Natural Numbers</a> / Induction</p>
+        <h1>Induction</h1>
+
+        <p>Mathematical induction is the most important proof technique for natural numbers. The idea is simple but profound: to prove a property <code>P(n)</code> holds for every natural number, you prove two things:</p>
+
+        <p><strong>Base case:</strong> <code>P(0)</code> is true.</p>
+        <p><strong>Inductive step:</strong> For any <code>n</code>, if <code>P(n)</code> is true then <code>P(n + 1)</code> is true.</p>
+
+        <p>Why does this work? Because every natural number is reached from zero by applying successor finitely many times. The base case covers zero; the inductive step covers every successor. Together, they cover everything.</p>
+
+        <p>In Lean 4, induction on a natural number <code>n</code> looks like this:</p>
+
+<pre>induction n with
+| zero =>
+  -- prove the base case here
+| succ n ih =>
+  -- ih : P(n)   (the induction hypothesis)
+  -- prove P(n + 1) here</pre>
+
+        <p>The <code>ih</code> in the successor branch is the <strong>induction hypothesis</strong> — the assumption that the property holds for <code>n</code>. You get to use it for free when proving the property for <code>n + 1</code>.</p>
+
+        <h2>Exercise</h2>
+
+        <p>Prove that <code>2 ^ n</code> is always positive. This is a clean example of induction where the base case is a concrete computation and the inductive step requires a small arithmetic argument.</p>
+
+<pre>theorem pow_two_pos (n : Nat) : 0 &lt; 2 ^ n := by
+  sorry</pre>
+
+        <details class="hint">
+            <summary>Hint 1</summary>
+            <div class="hint-content">
+                <p>Start with <code>induction n</code>. In the base case, <code>2 ^ 0 = 1</code> by definition, and <code>0 &lt; 1</code> is true.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Hint 2</summary>
+            <div class="hint-content">
+                <p>In the successor case, <code>2 ^ (n + 1) = 2 * 2 ^ n</code>. Since <code>2 ^ n > 0</code> by the induction hypothesis, <code>2 * 2 ^ n > 0</code> as well. The <code>omega</code> tactic or <code>simp</code> with appropriate lemmas can handle the arithmetic.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre>theorem pow_two_pos (n : Nat) : 0 &lt; 2 ^ n := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    simp [Nat.pow_succ, Nat.mul_comm]
+    omega</pre>
+                <p>Alternatively, a shorter proof using <code>positivity</code>-style reasoning:</p>
+<pre>theorem pow_two_pos (n : Nat) : 0 &lt; 2 ^ n := by
+  exact Nat.pos_pow_of_pos n (by omega)</pre>
+                <p>Or simply:</p>
+<pre>theorem pow_two_pos (n : Nat) : 0 &lt; 2 ^ n := by
+  induction n with
+  | zero => decide
+  | succ n ih =>
+    calc 0 &lt; 2 ^ n := ih
+    _ &lt; 2 ^ n + 2 ^ n := Nat.lt_add_of_pos_right ih
+    _ = 2 ^ (n + 1) := by ring</pre>
+                <p>The <code>calc</code> block lets you chain inequalities step by step, making the proof readable.</p>
+            </div>
+        </details>
+
+        <h2>The shape of an induction proof</h2>
+
+        <p>Every induction proof follows the same pattern:</p>
+
+        <ol style="color: var(--text-muted); line-height: 2; margin: 1rem 0 1rem 1.5rem;">
+            <li>Identify which variable to induct on.</li>
+            <li>Prove the base case (usually the easy part).</li>
+            <li>In the inductive step, figure out how to use <code>ih</code> to bridge the gap from <code>n</code> to <code>n + 1</code>.</li>
+        </ol>
+
+        <p>The hard part is almost always step 3. The induction hypothesis gives you something about <code>n</code>, and you need to connect it to a statement about <code>n + 1</code>. This often requires unfolding definitions or applying lemmas to transform the goal into a form where <code>ih</code> applies.</p>
+
+        <h2>Key takeaways</h2>
+
+        <p><strong>Induction is pattern matching on proofs.</strong> Just as you pattern match on <code>Nat</code> to define functions, you pattern match on <code>Nat</code> to prove properties. The <code>induction</code> tactic in Lean makes this explicit.</p>
+        <p><strong><code>decide</code></strong> can prove any decidable proposition about concrete values. For the base case <code>0 &lt; 2 ^ 0</code>, it just computes and checks.</p>
+        <p><strong><code>calc</code></strong> blocks let you write proofs as chains of equalities or inequalities, making complex arguments readable.</p>
+
+        <div class="exercise-nav">
+            <a href="03-add-comm.html">&larr; Addition is commutative</a>
+            <a href="05-mul-distrib.html">Next: Multiplication distributes over addition &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disjunction (or) — if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Logic</a> / Disjunction</p>
+        <h1>04 &mdash; Disjunction (or)</h1>
+
+        <section class="math-section">
+            <h2>The Mathematics</h2>
+            <p>The disjunction <strong>P &or; Q</strong> (read "P or Q") means that <em>at least one</em> of P or Q is true. Maybe both are true &mdash; that's fine too. This is the inclusive or, not the "one or the other but not both" you sometimes mean in everyday speech.</p>
+
+            <p>There are two sides to working with disjunction:</p>
+
+            <p><strong>Proving</strong> a disjunction is like choosing a door. You pick one side and prove it:</p>
+            <ul>
+                <li><code>Or.inl hp</code> &mdash; "I'll prove the left side." Takes a proof <code>hp : P</code> and gives you <code>P &or; Q</code>.</li>
+                <li><code>Or.inr hq</code> &mdash; "I'll prove the right side." Takes a proof <code>hq : Q</code> and gives you <code>P &or; Q</code>.</li>
+            </ul>
+
+            <p><strong>Using</strong> a disjunction hypothesis is like case analysis. If you know <code>h : P &or; Q</code>, you don't know <em>which</em> one is true, so you have to handle both possibilities. The tactic <code>rcases h with hp | hq</code> splits into two goals: one where you have <code>hp : P</code>, and one where you have <code>hq : Q</code>.</p>
+        </section>
+
+        <section class="lean-section">
+            <h2>The Lean Proof</h2>
+            <p>Here's the pattern. Suppose we want to prove that if P is true, then <code>P &or; Q</code>:</p>
+<pre><code>theorem or_intro_left (P Q : Prop) (hp : P) : P &or; Q := by
+  exact Or.inl hp</code></pre>
+            <p>Simple &mdash; we have <code>hp : P</code>, so we inject it into the left side of the disjunction with <code>Or.inl</code>.</p>
+
+            <p>Now suppose we're given <code>P &or; Q</code> and need to do something with it. We split into cases:</p>
+<pre><code>theorem or_elim (P Q R : Prop) (h : P &or; Q) (hpr : P &rarr; R) (hqr : Q &rarr; R) : R := by
+  rcases h with hp | hq
+  &middot; exact hpr hp
+  &middot; exact hqr hq</code></pre>
+            <p>The <code>rcases</code> tactic splits <code>h</code> into two cases. In each case, we use the relevant implication to reach <code>R</code>.</p>
+        </section>
+
+        <section class="exercise-section">
+            <h2>Your Turn</h2>
+            <p>Prove that disjunction is commutative &mdash; if <code>P &or; Q</code>, then <code>Q &or; P</code>. You'll need to case-split and then rebuild the disjunction with the sides swapped.</p>
+<pre><code>theorem or_comm (P Q : Prop) (h : P &or; Q) : Q &or; P := by
+  sorry</code></pre>
+            <p>Try it in <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>. Think about it: if P is true, which side of <code>Q &or; P</code> does that prove?</p>
+        </section>
+
+        <details class="hint">
+            <summary>Hint</summary>
+            <div class="hint-content">
+                <p>Start by case-splitting on <code>h</code> with <code>rcases h with hp | hq</code>. This gives you two goals.</p>
+                <p>In the first case, you have <code>hp : P</code> and need <code>Q &or; P</code>. Since P is true, that goes on the <em>right</em> side &mdash; so use <code>Or.inr</code>.</p>
+                <p>In the second case, you have <code>hq : Q</code> and need <code>Q &or; P</code>. Q goes on the <em>left</em> &mdash; use <code>Or.inl</code>.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre><code>theorem or_comm (P Q : Prop) (h : P &or; Q) : Q &or; P := by
+  rcases h with hp | hq
+  &middot; exact Or.inr hp
+  &middot; exact Or.inl hq</code></pre>
+                <p>We split <code>h : P &or; Q</code> into two cases. When we have <code>hp : P</code>, we put it on the right of <code>Q &or; P</code> with <code>Or.inr</code>. When we have <code>hq : Q</code>, we put it on the left with <code>Or.inl</code>. The sides swap perfectly.</p>
+            </div>
+        </details>
+
+        <div class="exercise-nav">
+            <a href="03-and.html">&larr; Conjunction (and)</a>
+            <a href="05-iff.html">If and only if &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+</body>
+</html>

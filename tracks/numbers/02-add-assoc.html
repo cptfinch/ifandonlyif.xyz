@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Addition is associative — if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Natural Numbers</a> / Addition is associative</p>
+        <h1>Addition is associative</h1>
+
+        <p>Associativity says that when you add three numbers, it doesn't matter where you place the parentheses:</p>
+
+<pre>(a + b) + c = a + (b + c)</pre>
+
+        <p>This feels obvious, but it has to be <em>proved</em> from the definition of addition. Since <code>Nat.add</code> is defined by recursion on its second argument, the natural strategy is to induct on <code>c</code>.</p>
+
+        <p>In the <strong>base case</strong> (<code>c = 0</code>), both sides reduce to the same thing by the definition of addition: <code>(a + b) + 0 = a + b</code> and <code>a + (b + 0) = a + b</code>.</p>
+
+        <p>In the <strong>inductive step</strong> (<code>c = succ c</code>), we unfold the definition of addition on successors and use the induction hypothesis.</p>
+
+        <h2>The <code>omega</code> tactic</h2>
+
+        <p>Lean 4 includes the <code>omega</code> tactic, which automatically decides linear arithmetic over natural numbers and integers. It can prove any true statement involving addition, subtraction, multiplication by constants, and comparisons. For a theorem like associativity, <code>omega</code> closes the goal instantly.</p>
+
+        <p>But using <code>omega</code> on everything is like using a calculator in a maths class — you get the answer but miss the lesson. In this exercise, try the manual proof first.</p>
+
+        <h2>Exercise</h2>
+
+<pre>theorem my_add_assoc (a b c : Nat) : (a + b) + c = a + (b + c) := by
+  sorry</pre>
+
+        <details class="hint">
+            <summary>Hint 1</summary>
+            <div class="hint-content">
+                <p>Induct on <code>c</code>. Remember that addition is defined by recursion on the second argument, so inducting on <code>c</code> lets you unfold the definition.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Hint 2</summary>
+            <div class="hint-content">
+                <p>In the successor case, the key fact is <code>Nat.add_succ</code>, which says <code>n + Nat.succ m = Nat.succ (n + m)</code>. Apply it to both sides, then use the induction hypothesis.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution (one-liner)</summary>
+            <div class="hint-content">
+<pre>theorem my_add_assoc (a b c : Nat) : (a + b) + c = a + (b + c) := by
+  omega</pre>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution (by induction)</summary>
+            <div class="hint-content">
+<pre>theorem my_add_assoc (a b c : Nat) : (a + b) + c = a + (b + c) := by
+  induction c with
+  | zero => rfl
+  | succ c ih =>
+    simp [Nat.add_succ]
+    exact ih</pre>
+                <p>In the base case, both sides reduce to the same expression because <code>n + 0 = n</code> by definition. In the successor case, <code>Nat.add_succ</code> rewrites <code>x + succ c</code> to <code>succ (x + c)</code> on both sides, and then the induction hypothesis <code>ih</code> finishes the job.</p>
+            </div>
+        </details>
+
+        <h2>Key takeaways</h2>
+
+        <p><strong><code>omega</code></strong> is a decision procedure for linear arithmetic. It will prove any true linear equation or inequality over <code>Nat</code> or <code>Int</code>. Use it when you want to move fast.</p>
+        <p><strong>Induction on the recursion variable</strong> is the fundamental technique. When a function is defined by recursion on an argument, proving properties of that function usually requires induction on the same argument.</p>
+
+        <div class="exercise-nav">
+            <a href="01-zero-succ.html">&larr; Zero and successor</a>
+            <a href="03-add-comm.html">Next: Addition is commutative &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+</body>
+</html>

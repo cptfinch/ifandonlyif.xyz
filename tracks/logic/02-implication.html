@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implication and intro/apply — if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Logic</a> / Implication</p>
+
+        <h1>Implication and intro/apply</h1>
+
+        <h2>The mathematics</h2>
+
+        <p>An <strong>implication</strong> <code>P &rarr; Q</code> means "if P is true, then Q is true." It's the most fundamental connective in logic. Every time you say "if ... then ..." in everyday life, you're using implication.</p>
+
+        <p>To <em>prove</em> an implication, you assume the hypothesis and show the conclusion follows. "Assume it's raining. Then the ground is wet." That's it. You don't need to prove it's actually raining &mdash; you just show what happens <em>if</em> it is.</p>
+
+        <p>To <em>use</em> an implication you already have, you apply it. If you know <code>P &rarr; Q</code> and you know <code>P</code>, then you can conclude <code>Q</code>. Logicians call this <strong>modus ponens</strong>.</p>
+
+        <h2>The Lean 4 proof</h2>
+
+        <p>Two key tactics make implication work in Lean 4:</p>
+
+        <p><strong><code>intro h</code></strong> &mdash; When your goal is <code>P &rarr; Q</code>, this tactic says "assume <code>P</code>, call it <code>h</code>." The goal changes to <code>Q</code>, and you now have <code>h : P</code> in your context.</p>
+
+        <p><strong><code>exact</code></strong> &mdash; When you have exactly the right term to close the goal, <code>exact</code> finishes the proof. If <code>hpq : P &rarr; Q</code> and <code>hp : P</code>, then <code>exact hpq hp</code> produces a proof of <code>Q</code> by function application.</p>
+
+<pre>-- The identity function: P implies P
+theorem identity (P : Prop) : P &rarr; P := by
+  intro h
+  exact h
+
+-- Using a hypothesis of type P &rarr; Q
+theorem modus_ponens (P Q : Prop) (hp : P) (hpq : P &rarr; Q) : Q := by
+  exact hpq hp
+
+-- You can also use `apply` to work backwards
+theorem modus_ponens' (P Q : Prop) (hp : P) (hpq : P &rarr; Q) : Q := by
+  apply hpq
+  exact hp</pre>
+
+        <p>Notice that in Lean 4, <code>P &rarr; Q</code> is really just a function type. A proof of <code>P &rarr; Q</code> is a function that takes a proof of <code>P</code> and returns a proof of <code>Q</code>. So <code>hpq hp</code> is just function application.</p>
+
+        <h2>Your turn</h2>
+
+        <p>Replace <code>sorry</code> with a proof. Copy this into <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a> and make it compile.</p>
+
+<pre>theorem my_impl (P Q : Prop) (hp : P) (hpq : P &rarr; Q) : Q := by
+  sorry</pre>
+
+        <details class="hint">
+            <summary>Hint</summary>
+            <div class="hint-content">
+                <p>You have <code>hpq : P &rarr; Q</code> (a function from <code>P</code> to <code>Q</code>) and <code>hp : P</code> (a proof of <code>P</code>). What happens when you apply the function to the argument?</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre>theorem my_impl (P Q : Prop) (hp : P) (hpq : P &rarr; Q) : Q := by
+  exact hpq hp</pre>
+            </div>
+        </details>
+
+        <div class="exercise-nav">
+            <a href="01-true.html">&larr; True is true</a>
+            <a href="03-and.html">Conjunction &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+</body>
+</html>

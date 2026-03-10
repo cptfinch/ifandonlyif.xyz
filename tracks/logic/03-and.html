@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conjunction (and) — if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Logic</a> / Conjunction</p>
+
+        <h1>Conjunction (and)</h1>
+
+        <h2>The mathematics</h2>
+
+        <p><strong>Conjunction</strong> <code>P &and; Q</code> means "both P and Q are true." It's the logical "and." Simple enough in everyday language: "It's sunny <em>and</em> warm." Both parts must hold.</p>
+
+        <p>To <em>prove</em> a conjunction, you need to prove both halves separately. There's no shortcut &mdash; you have to do the work twice. In Lean 4, the <code>constructor</code> tactic splits a conjunction goal into two subgoals.</p>
+
+        <p>To <em>use</em> a conjunction you already have, you break it apart into its two pieces. If you know <code>h : P &and; Q</code>, you can extract the proof of <code>P</code> and the proof of <code>Q</code> individually. In Lean 4, <code>obtain &langle;hp, hq&rangle; := h</code> does exactly this, giving you <code>hp : P</code> and <code>hq : Q</code>.</p>
+
+        <h2>The Lean 4 proof</h2>
+
+        <p>Here are the key tactics for working with conjunction:</p>
+
+        <p><strong><code>constructor</code></strong> &mdash; When your goal is <code>P &and; Q</code>, this splits it into two goals: first prove <code>P</code>, then prove <code>Q</code>.</p>
+
+        <p><strong><code>obtain &langle;hp, hq&rangle; := h</code></strong> &mdash; When you have <code>h : P &and; Q</code> in context, this destructures it into <code>hp : P</code> and <code>hq : Q</code>. The angle brackets <code>&langle; &rangle;</code> are typed as <code>\langle</code> and <code>\rangle</code> in Lean.</p>
+
+        <p><strong><code>And.intro</code></strong> &mdash; The term-mode way to build a conjunction: <code>And.intro hp hq</code> produces a proof of <code>P &and; Q</code> from proofs of <code>P</code> and <code>Q</code>. You can also use anonymous constructor syntax: <code>&langle;hp, hq&rangle;</code>.</p>
+
+<pre>-- Prove a conjunction by proving both sides
+theorem and_intro (P Q : Prop) (hp : P) (hq : Q) : P &and; Q := by
+  constructor
+  &middot; exact hp
+  &middot; exact hq
+
+-- Same thing using anonymous constructor syntax
+theorem and_intro' (P Q : Prop) (hp : P) (hq : Q) : P &and; Q := by
+  exact &langle;hp, hq&rangle;
+
+-- Destructure a conjunction and swap the halves
+theorem and_comm_example (P Q : Prop) (h : P &and; Q) : Q &and; P := by
+  obtain &langle;hp, hq&rangle; := h
+  exact &langle;hq, hp&rangle;
+
+-- You can also use .1 and .2 to access the components
+theorem and_left (P Q : Prop) (h : P &and; Q) : P := by
+  exact h.1</pre>
+
+        <h2>Your turn</h2>
+
+        <p>Prove that conjunction is commutative: if <code>P &and; Q</code>, then <code>Q &and; P</code>. Replace <code>sorry</code> with a proof.</p>
+
+<pre>theorem and_comm (P Q : Prop) (h : P &and; Q) : Q &and; P := by
+  sorry</pre>
+
+        <details class="hint">
+            <summary>Hint</summary>
+            <div class="hint-content">
+                <p>First, break apart <code>h</code> to get the individual proofs of <code>P</code> and <code>Q</code>. Then put them back together in the opposite order. The <code>obtain</code> tactic and anonymous constructor <code>&langle;...&rangle;</code> are your friends here.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre>theorem and_comm (P Q : Prop) (h : P &and; Q) : Q &and; P := by
+  obtain &langle;hp, hq&rangle; := h
+  exact &langle;hq, hp&rangle;</pre>
+            </div>
+        </details>
+
+        <div class="exercise-nav">
+            <a href="02-implication.html">&larr; Implication</a>
+            <a href="04-or.html">Disjunction &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+</body>
+</html>
