@@ -1,0 +1,49 @@
+{
+  "theorem": "iff_comm (P Q : Prop) (h : P ↔ Q) : Q ↔ P",
+  "steps": [
+    {
+      "label": "Initial proof state",
+      "tactic": null,
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "h", "type": "P ↔ Q" }
+      ],
+      "goals": ["Q ↔ P"]
+    },
+    {
+      "tactic": "constructor",
+      "label": "Split the iff into two implications",
+      "explanation": "Q ↔ P means (Q → P) ∧ (P → Q). The constructor tactic splits it into two subgoals: prove Q → P, then prove P → Q.",
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "h", "type": "P ↔ Q" }
+      ],
+      "goals": ["Q → P", "P → Q"]
+    },
+    {
+      "tactic": "exact h.mpr",
+      "label": "Forward direction: use the backward part of h",
+      "explanation": "h.mpr extracts the backward implication Q → P from h : P ↔ Q. This is exactly what we need for the first goal.",
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "h", "type": "P ↔ Q" }
+      ],
+      "goals": ["P → Q"]
+    },
+    {
+      "tactic": "exact h.mp",
+      "label": "Backward direction: use the forward part of h",
+      "explanation": "h.mp extracts the forward implication P → Q from h : P ↔ Q. Second goal done.",
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "h", "type": "P ↔ Q" }
+      ],
+      "goals": [],
+      "qed": true
+    }
+  ]
+}

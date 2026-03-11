@@ -1,0 +1,29 @@
+{
+  "theorem": "my_impl (P Q : Prop) (hp : P) (hpq : P → Q) : Q",
+  "steps": [
+    {
+      "label": "Initial proof state",
+      "tactic": null,
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "hp", "type": "P" },
+        { "name": "hpq", "type": "P → Q" }
+      ],
+      "goals": ["Q"]
+    },
+    {
+      "tactic": "exact hpq hp",
+      "label": "Apply modus ponens",
+      "explanation": "hpq is a function P → Q. We apply it to hp : P to get a proof of Q. In Lean, function application IS modus ponens.",
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "hp", "type": "P" },
+        { "name": "hpq", "type": "P → Q" }
+      ],
+      "goals": [],
+      "qed": true
+    }
+  ]
+}

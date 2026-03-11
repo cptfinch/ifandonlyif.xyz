@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
 </head>
 <body>
     <nav>
@@ -48,6 +49,10 @@
 
             <p>The names <code>mp</code> and <code>mpr</code> come from <em>modus ponens</em> and <em>modus ponens reverse</em> &mdash; the classical rule of inference that lets you go from "if P then Q" and "P" to "Q".</p>
         </section>
+
+        <h2>Watch the proof</h2>
+        <p>Step through the proof and watch the proof state transform at each tactic. Use the arrows or press ← →.</p>
+        <div id="proof-stepper"></div>
 
         <section class="lean-section">
             <h2>The Lean Proof</h2>
@@ -133,5 +138,11 @@
         <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
         <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
     </footer>
+    <script src="../../js/stepper.js"></script>
+    <script>
+    fetch('../../js/proofs/logic-05-iff.json')
+      .then(r => r.json())
+      .then(data => ProofStepper.mount('proof-stepper', data));
+    </script>
 </body>
 </html>

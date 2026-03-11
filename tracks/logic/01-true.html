@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
 </head>
 <body>
     <nav>
@@ -33,6 +34,10 @@
         <p>In everyday reasoning, "True" is so obvious you'd never bother stating it. But in formal logic, we need a way to represent the concept of something that is unconditionally true. That's what <code>True</code> does.</p>
 
         <p>In Lean 4, <code>True</code> is a type (a proposition) that has exactly one constructor: <code>True.intro</code>. Think of it as a certificate that says "yes, this is true" &mdash; and there's always exactly one such certificate available. Because there's always a proof of <code>True</code>, it's the easiest theorem you'll ever prove.</p>
+
+        <h2>Watch the proof</h2>
+        <p>Step through the proof and watch the proof state transform at each tactic. Use the arrows or press ← →.</p>
+        <div id="proof-stepper"></div>
 
         <h2>The Lean 4 proof</h2>
 
@@ -83,5 +88,11 @@ theorem true_is_true'' : True := True.intro</pre>
         <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
         <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
     </footer>
+    <script src="../../js/stepper.js"></script>
+    <script>
+    fetch('../../js/proofs/logic-01-true.json')
+      .then(r => r.json())
+      .then(data => ProofStepper.mount('proof-stepper', data));
+    </script>
 </body>
 </html>

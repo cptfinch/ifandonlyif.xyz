@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
 </head>
 <body>
     <nav>
@@ -33,6 +34,10 @@
         <p>To <em>prove</em> an implication, you assume the hypothesis and show the conclusion follows. "Assume it's raining. Then the ground is wet." That's it. You don't need to prove it's actually raining &mdash; you just show what happens <em>if</em> it is.</p>
 
         <p>To <em>use</em> an implication you already have, you apply it. If you know <code>P &rarr; Q</code> and you know <code>P</code>, then you can conclude <code>Q</code>. Logicians call this <strong>modus ponens</strong>.</p>
+
+        <h2>Watch the proof</h2>
+        <p>Step through the proof and watch the proof state transform at each tactic. Use the arrows or press ← →.</p>
+        <div id="proof-stepper"></div>
 
         <h2>The Lean 4 proof</h2>
 
@@ -90,5 +95,11 @@ theorem modus_ponens' (P Q : Prop) (hp : P) (hpq : P &rarr; Q) : Q := by
         <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
         <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
     </footer>
+    <script src="../../js/stepper.js"></script>
+    <script>
+    fetch('../../js/proofs/logic-02-implication.json')
+      .then(r => r.json())
+      .then(data => ProofStepper.mount('proof-stepper', data));
+    </script>
 </body>
 </html>

@@ -1,0 +1,51 @@
+{
+  "theorem": "or_comm (P Q : Prop) (h : P ∨ Q) : Q ∨ P",
+  "steps": [
+    {
+      "label": "Initial proof state",
+      "tactic": null,
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "h", "type": "P ∨ Q" }
+      ],
+      "goals": ["Q ∨ P"]
+    },
+    {
+      "tactic": "rcases h with hp | hq",
+      "label": "Case split on the disjunction",
+      "explanation": "h : P ∨ Q could be either side. We split into two cases: one where P is true, one where Q is true. This creates two subgoals.",
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "hp", "type": "P", "new": true }
+      ],
+      "goals": ["Q ∨ P", "Q ∨ P"],
+      "removed": ["h"]
+    },
+    {
+      "tactic": "exact Or.inr hp",
+      "label": "Case 1: we have P, prove Q ∨ P via the right",
+      "explanation": "We have hp : P. To prove Q ∨ P, we use Or.inr to inject into the right side of the disjunction.",
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "hp", "type": "P" }
+      ],
+      "goals": ["Q ∨ P"]
+    },
+    {
+      "tactic": "exact Or.inl hq",
+      "label": "Case 2: we have Q, prove Q ∨ P via the left",
+      "explanation": "Now in the second case, we have hq : Q. To prove Q ∨ P, we use Or.inl to inject into the left side.",
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "hq", "type": "Q", "new": true }
+      ],
+      "goals": [],
+      "removed": ["hp"],
+      "qed": true
+    }
+  ]
+}

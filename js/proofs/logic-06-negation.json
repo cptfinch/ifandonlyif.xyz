@@ -1,0 +1,37 @@
+{
+  "theorem": "not_not_intro (P : Prop) (hp : P) : ¬¬P",
+  "steps": [
+    {
+      "label": "Initial proof state",
+      "tactic": null,
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "hp", "type": "P" }
+      ],
+      "goals": ["¬¬P"]
+    },
+    {
+      "tactic": "intro hnp",
+      "label": "Unfold the outer negation",
+      "explanation": "¬¬P means (¬P) → False. We use intro to assume ¬P and must now derive False. We now have both hp : P and hnp : ¬P — a contradiction.",
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "hp", "type": "P" },
+        { "name": "hnp", "type": "¬P", "new": true }
+      ],
+      "goals": ["False"]
+    },
+    {
+      "tactic": "exact hnp hp",
+      "label": "Apply the contradiction",
+      "explanation": "hnp : ¬P is really hnp : P → False. Apply it to hp : P and we get False. Contradiction closed.",
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "hp", "type": "P" },
+        { "name": "hnp", "type": "¬P" }
+      ],
+      "goals": [],
+      "qed": true
+    }
+  ]
+}

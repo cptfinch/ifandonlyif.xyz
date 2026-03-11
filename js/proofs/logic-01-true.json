@@ -1,0 +1,19 @@
+{
+  "theorem": "my_first_proof : True",
+  "steps": [
+    {
+      "label": "Initial proof state",
+      "tactic": null,
+      "hypotheses": [],
+      "goals": ["True"]
+    },
+    {
+      "tactic": "trivial",
+      "label": "Close the goal",
+      "explanation": "True has exactly one proof: True.intro. The trivial tactic finds it automatically.",
+      "hypotheses": [],
+      "goals": [],
+      "qed": true
+    }
+  ]
+}

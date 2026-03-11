@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
 </head>
 <body>
     <nav>
@@ -33,6 +34,12 @@
         <p>To <em>prove</em> a conjunction, you need to prove both halves separately. There's no shortcut &mdash; you have to do the work twice. In Lean 4, the <code>constructor</code> tactic splits a conjunction goal into two subgoals.</p>
 
         <p>To <em>use</em> a conjunction you already have, you break it apart into its two pieces. If you know <code>h : P &and; Q</code>, you can extract the proof of <code>P</code> and the proof of <code>Q</code> individually. In Lean 4, <code>obtain &langle;hp, hq&rangle; := h</code> does exactly this, giving you <code>hp : P</code> and <code>hq : Q</code>.</p>
+
+        <h2>Watch the proof</h2>
+
+        <p>Step through the proof of <code>and_comm</code> and watch how the proof state changes at each tactic. Use the arrows or press ← →.</p>
+
+        <div id="and-comm-stepper"></div>
 
         <h2>The Lean 4 proof</h2>
 
@@ -96,5 +103,11 @@ theorem and_left (P Q : Prop) (h : P &and; Q) : P := by
         <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
         <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
     </footer>
+    <script src="../../js/stepper.js"></script>
+    <script>
+    fetch('../../js/proofs/logic-03-and.json')
+      .then(r => r.json())
+      .then(data => ProofStepper.mount('and-comm-stepper', data));
+    </script>
 </body>
 </html>

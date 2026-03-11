@@ -1,0 +1,41 @@
+{
+  "theorem": "and_comm (P Q : Prop) (h : P ∧ Q) : Q ∧ P",
+  "steps": [
+    {
+      "label": "Initial proof state",
+      "tactic": null,
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "h", "type": "P ∧ Q" }
+      ],
+      "goals": ["Q ∧ P"]
+    },
+    {
+      "tactic": "obtain ⟨hp, hq⟩ := h",
+      "label": "Destructure the conjunction",
+      "explanation": "We break h : P ∧ Q into its two parts. h disappears and we get hp : P and hq : Q as separate hypotheses.",
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "hp", "type": "P", "new": true },
+        { "name": "hq", "type": "Q", "new": true }
+      ],
+      "goals": ["Q ∧ P"],
+      "removed": ["h"]
+    },
+    {
+      "tactic": "exact ⟨hq, hp⟩",
+      "label": "Build the conjunction in reverse",
+      "explanation": "We construct Q ∧ P by providing hq (proof of Q) first and hp (proof of P) second. The anonymous constructor ⟨·, ·⟩ builds the pair.",
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "hp", "type": "P" },
+        { "name": "hq", "type": "Q" }
+      ],
+      "goals": [],
+      "qed": true
+    }
+  ]
+}
