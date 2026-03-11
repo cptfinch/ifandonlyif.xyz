@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rewriting — if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Proof Strategies</a> / Rewriting</p>
+
+        <h1>Strategy: Rewriting</h1>
+
+        <h2>Pattern recognition</h2>
+
+        <p><strong>When you see:</strong> a goal containing a term that matches one side of a known equality</p>
+        <p><strong>Strategy:</strong> Substitute the term using the equality.</p>
+        <p><strong>Tactic:</strong> <code>rw [h]</code> (left-to-right) or <code>rw [&larr; h]</code> (right-to-left)</p>
+
+        <p>Rewriting is the bread and butter of equational reasoning. If you know <code>h : a = b</code>, then <code>rw [h]</code> replaces every <code>a</code> in the goal with <code>b</code>. You can chain multiple rewrites: <code>rw [h1, h2, h3]</code>.</p>
+
+        <p>Unlike <code>simp</code>, which applies many rules automatically, <code>rw</code> applies exactly one rule at a time. This makes proofs longer but more transparent &mdash; you see exactly what changed.</p>
+
+        <h2>Watch the strategy in action</h2>
+
+        <div id="rewriting-stepper"></div>
+
+        <h2>The rule</h2>
+
+<pre>Having:      h : a = b
+Goal:        ...a...
+Action:      rw [h]
+Effect:      Goal becomes ...b... (a replaced by b)
+Think:       "Replace the known equal thing."
+
+Reverse:     rw [&larr; h]
+Effect:      Goal becomes ...a... (b replaced by a)</pre>
+
+        <h2>Your turn</h2>
+
+        <p>Given two equalities, chain them together.</p>
+
+<pre>theorem eq_chain (a b c : Nat) (h1 : a = b) (h2 : b = c) : a = c := by
+  sorry</pre>
+
+        <details class="hint">
+            <summary>Hint</summary>
+            <div class="hint-content">
+                <p>Rewrite with <code>h1</code> first (replacing <code>a</code> with <code>b</code>), then the goal becomes <code>b = c</code>, which is exactly <code>h2</code>.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre>theorem eq_chain (a b c : Nat) (h1 : a = b) (h2 : b = c) : a = c := by
+  rw [h1, h2]</pre>
+                <p>Or equivalently:</p>
+<pre>theorem eq_chain (a b c : Nat) (h1 : a = b) (h2 : b = c) : a = c := by
+  rw [h1]
+  exact h2</pre>
+            </div>
+        </details>
+
+        <p class="track-desc" style="margin-top: 2rem; font-size: 0.9rem;"><strong>See also:</strong> <a href="../numbers/05-mul-distrib.html">Numbers &sect;05 &mdash; Distributivity</a> (heavy use of <code>rw</code>)</p>
+
+        <div class="exercise-nav">
+            <a href="06-witness.html">&larr; Existential witness</a>
+            <a href="08-contrapositive.html">Contrapositive &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+    <script src="../../js/stepper.js"></script>
+    <script>
+    fetch('../../js/proofs/strategies-07-rewriting.json')
+      .then(r => r.json())
+      .then(data => ProofStepper.mount('rewriting-stepper', data));
+    </script>
+</body>
+</html>

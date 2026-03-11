@@ -1,0 +1,33 @@
+{
+  "theorem": "modus_ponens (P Q : Prop) (hpq : P → Q) (hp : P) : Q",
+  "steps": [
+    {
+      "label": "Initial proof state",
+      "tactic": null,
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "hpq", "type": "P → Q" },
+        { "name": "hp", "type": "P" }
+      ],
+      "goals": ["Q"]
+    },
+    {
+      "tactic": "exact hpq hp",
+      "label": "Apply the implication to its argument",
+      "explanation": "hpq is a function from P to Q. hp is a proof of P. Applying hpq to hp produces a proof of Q. This is modus ponens — the most basic rule of logic.",
+      "strategy": {
+        "rule": "To prove Q when you have P → Q and P, apply the implication",
+        "trigger": "You have h : P → Q and a proof of P"
+      },
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "hpq", "type": "P → Q" },
+        { "name": "hp", "type": "P" }
+      ],
+      "goals": [],
+      "qed": true
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split the goal — if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Proof Strategies</a> / Split the goal</p>
+
+        <h1>Strategy: Split the goal</h1>
+
+        <h2>Pattern recognition</h2>
+
+        <p><strong>When you see:</strong> a goal of the form <code>P &and; Q</code> or <code>P &harr; Q</code></p>
+        <p><strong>Strategy:</strong> Prove each half separately.</p>
+        <p><strong>Tactic:</strong> <code>constructor</code></p>
+
+        <p>When your goal is a conjunction or biconditional, you can't prove it in one shot. You need to split it into pieces and prove each one. The <code>constructor</code> tactic does exactly this &mdash; it replaces one goal with two (or more) subgoals.</p>
+
+        <p>This works because <code>P &and; Q</code> is defined as a structure with two fields, and <code>P &harr; Q</code> is <code>(P &rarr; Q) &and; (Q &rarr; P)</code>. The <code>constructor</code> tactic asks you to provide each field.</p>
+
+        <h2>Watch the strategy in action</h2>
+
+        <div id="split-goal-stepper"></div>
+
+        <h2>The rule</h2>
+
+<pre>Goal shape:  P &and; Q       (or P &harr; Q)
+Action:      constructor
+Effect:      Goal splits into two: first prove P, then prove Q
+Think:       "I need to prove both halves."</pre>
+
+        <h2>Your turn</h2>
+
+        <p>Prove that conjunction is associative: <code>(P &and; Q) &and; R &harr; P &and; (Q &and; R)</code>. You will need <code>constructor</code> multiple times.</p>
+
+<pre>theorem and_assoc (P Q R : Prop) : (P &and; Q) &and; R &harr; P &and; (Q &and; R) := by
+  sorry</pre>
+
+        <details class="hint">
+            <summary>Hint</summary>
+            <div class="hint-content">
+                <p>Start with <code>constructor</code> to split the iff into two implications. Each implication needs <code>intro h</code>, then <code>obtain</code> to destructure the conjunction, then <code>exact &langle;...&rangle;</code> to rebuild it.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre>theorem and_assoc (P Q R : Prop) : (P &and; Q) &and; R &harr; P &and; (Q &and; R) := by
+  constructor
+  &middot; intro &langle;&langle;hp, hq&rangle;, hr&rangle;
+    exact &langle;hp, hq, hr&rangle;
+  &middot; intro &langle;hp, hq, hr&rangle;
+    exact &langle;&langle;hp, hq&rangle;, hr&rangle;</pre>
+            </div>
+        </details>
+
+        <p class="track-desc" style="margin-top: 2rem; font-size: 0.9rem;"><strong>See also:</strong> <a href="../logic/03-and.html">Logic &sect;03 &mdash; Conjunction</a>, <a href="../logic/05-iff.html">Logic &sect;05 &mdash; If and only if</a></p>
+
+        <div class="exercise-nav">
+            <a href="01-direct-proof.html">&larr; Direct proof</a>
+            <a href="03-case-analysis.html">Case analysis &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+    <script src="../../js/stepper.js"></script>
+    <script>
+    fetch('../../js/proofs/strategies-02-split-the-goal.json')
+      .then(r => r.json())
+      .then(data => ProofStepper.mount('split-goal-stepper', data));
+    </script>
+</body>
+</html>

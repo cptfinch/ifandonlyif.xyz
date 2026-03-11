@@ -1,0 +1,27 @@
+{
+  "theorem": "add_right_id (n : Nat) : n + 0 = n",
+  "steps": [
+    {
+      "label": "Initial proof state",
+      "tactic": null,
+      "hypotheses": [
+        { "name": "n", "type": "Nat" }
+      ],
+      "goals": ["n + 0 = n"]
+    },
+    {
+      "tactic": "rfl",
+      "label": "Definitional equality — no induction needed!",
+      "explanation": "Wait — n + 0 reduces to n by the definition of Nat.add (which pattern matches on zero for the second argument). So rfl suffices. This is the contrast: n + 0 = n is definitional, but 0 + n = n requires induction. Knowing which is which is part of the strategy.",
+      "strategy": {
+        "rule": "Before reaching for induction, check if the goal holds by definition (rfl)",
+        "trigger": "Goal might be solved by computation alone"
+      },
+      "hypotheses": [
+        { "name": "n", "type": "Nat" }
+      ],
+      "goals": [],
+      "qed": true
+    }
+  ]
+}

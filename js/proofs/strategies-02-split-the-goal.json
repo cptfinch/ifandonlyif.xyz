@@ -1,0 +1,57 @@
+{
+  "theorem": "and_intro (P Q : Prop) (hp : P) (hq : Q) : P ∧ Q",
+  "steps": [
+    {
+      "label": "Initial proof state",
+      "tactic": null,
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "hp", "type": "P" },
+        { "name": "hq", "type": "Q" }
+      ],
+      "goals": ["P ∧ Q"]
+    },
+    {
+      "tactic": "constructor",
+      "label": "Split the conjunction into two subgoals",
+      "explanation": "The goal P ∧ Q is a structure with two fields. constructor asks us to provide each: first a proof of P, then a proof of Q. One goal becomes two.",
+      "strategy": {
+        "rule": "To prove A ∧ B, prove A and prove B separately",
+        "trigger": "Goal has shape _ ∧ _"
+      },
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "hp", "type": "P" },
+        { "name": "hq", "type": "Q" }
+      ],
+      "goals": ["P", "Q"]
+    },
+    {
+      "tactic": "exact hp",
+      "label": "First subgoal: prove P",
+      "explanation": "We have hp : P in context. The goal is P. Exact match.",
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "hp", "type": "P" },
+        { "name": "hq", "type": "Q" }
+      ],
+      "goals": ["Q"]
+    },
+    {
+      "tactic": "exact hq",
+      "label": "Second subgoal: prove Q",
+      "explanation": "We have hq : Q in context. The goal is Q. Done!",
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "hp", "type": "P" },
+        { "name": "hq", "type": "Q" }
+      ],
+      "goals": [],
+      "qed": true
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "theorem": "contrapose_demo (P Q : Prop) [Decidable P] [Decidable Q] (h : P → Q) : ¬Q → ¬P",
+  "steps": [
+    {
+      "label": "Initial proof state",
+      "tactic": null,
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "h", "type": "P → Q" }
+      ],
+      "goals": ["¬Q → ¬P"]
+    },
+    {
+      "tactic": "intro hnq",
+      "label": "Assume ¬Q",
+      "explanation": "We're proving the contrapositive. Start by assuming Q is false.",
+      "strategy": {
+        "rule": "To prove ¬Q → ¬P, assume ¬Q and derive ¬P",
+        "trigger": "Goal is an implication — use direct proof (intro)"
+      },
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "h", "type": "P → Q" },
+        { "name": "hnq", "type": "¬Q", "new": true }
+      ],
+      "goals": ["¬P"]
+    },
+    {
+      "tactic": "intro hp",
+      "label": "Assume P (to derive contradiction)",
+      "explanation": "¬P means P → False. So we assume P and need to derive False. Now we have hp : P and h : P → Q, so we can get Q. But we also have hnq : ¬Q...",
+      "strategy": {
+        "rule": "To prove ¬A, assume A and derive False",
+        "trigger": "Goal has shape ¬_"
+      },
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "h", "type": "P → Q" },
+        { "name": "hnq", "type": "¬Q" },
+        { "name": "hp", "type": "P", "new": true }
+      ],
+      "goals": ["False"]
+    },
+    {
+      "tactic": "exact hnq (h hp)",
+      "label": "Chain the contradiction",
+      "explanation": "h hp : Q (applying the implication to our assumption). hnq (h hp) : False (applying ¬Q to Q). The chain: P → Q → False. Contradiction!",
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "h", "type": "P → Q" },
+        { "name": "hnq", "type": "¬Q" },
+        { "name": "hp", "type": "P" }
+      ],
+      "goals": [],
+      "qed": true
+    }
+  ]
+}

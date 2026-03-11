@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proof by contradiction — if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Proof Strategies</a> / Contradiction</p>
+
+        <h1>Strategy: Proof by contradiction</h1>
+
+        <h2>Pattern recognition</h2>
+
+        <p><strong>When you see:</strong> a goal of the form <code>&not;P</code> (negation)</p>
+        <p><strong>Strategy:</strong> Assume <code>P</code> and derive <code>False</code>.</p>
+        <p><strong>Tactic:</strong> <code>intro h</code> (because <code>&not;P</code> is really <code>P &rarr; False</code>)</p>
+
+        <p>In Lean 4, <code>&not;P</code> is <em>defined</em> as <code>P &rarr; False</code>. So proving a negation is just a special case of direct proof &mdash; you assume the thing you want to negate, and show it leads to <code>False</code>.</p>
+
+        <p>When you have both <code>h : P</code> and <code>hn : &not;P</code> (i.e., <code>hn : P &rarr; False</code>), applying <code>hn</code> to <code>h</code> gives you <code>False</code>. That's a contradiction.</p>
+
+        <h2>Watch the strategy in action</h2>
+
+        <div id="contradiction-stepper"></div>
+
+        <h2>The rule</h2>
+
+<pre>Goal shape:  &not;P         (which is P &rarr; False)
+Action:      intro h
+Effect:      h : P appears in context, goal becomes False
+Think:       "Assume P. Now I need a contradiction."
+
+Having:      h : P  and  hn : &not;P
+Action:      exact hn h
+Effect:      Produces False. Contradiction closed.</pre>
+
+        <h2>Your turn</h2>
+
+        <p>Prove double negation introduction: from <code>P</code>, derive <code>&not;&not;P</code>.</p>
+
+<pre>theorem not_not_intro (P : Prop) (hp : P) : &not;&not;P := by
+  sorry</pre>
+
+        <details class="hint">
+            <summary>Hint</summary>
+            <div class="hint-content">
+                <p><code>&not;&not;P</code> is <code>&not;P &rarr; False</code>, which is <code>(P &rarr; False) &rarr; False</code>. Use <code>intro hnp</code> to assume <code>&not;P</code>, then apply it to <code>hp</code>.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre>theorem not_not_intro (P : Prop) (hp : P) : &not;&not;P := by
+  intro hnp
+  exact hnp hp</pre>
+            </div>
+        </details>
+
+        <p class="track-desc" style="margin-top: 2rem; font-size: 0.9rem;"><strong>See also:</strong> <a href="../logic/06-negation.html">Logic &sect;06 &mdash; Negation</a></p>
+
+        <div class="exercise-nav">
+            <a href="03-case-analysis.html">&larr; Case analysis</a>
+            <a href="05-induction.html">Induction &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+    <script src="../../js/stepper.js"></script>
+    <script>
+    fetch('../../js/proofs/strategies-04-contradiction.json')
+      .then(r => r.json())
+      .then(data => ProofStepper.mount('contradiction-stepper', data));
+    </script>
+</body>
+</html>

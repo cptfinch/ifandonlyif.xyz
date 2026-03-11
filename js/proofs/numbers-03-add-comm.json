@@ -1,0 +1,66 @@
+{
+  "theorem": "my_add_comm (a b : Nat) : a + b = b + a",
+  "steps": [
+    {
+      "label": "Initial proof state",
+      "tactic": null,
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" }
+      ],
+      "goals": ["a + b = b + a"]
+    },
+    {
+      "tactic": "induction b with",
+      "label": "Induct on b",
+      "explanation": "We induct on b. The base case needs a + 0 = 0 + a. The successor case needs a + succ b = succ b + a.",
+      "hypotheses": [
+        { "name": "a", "type": "Nat" }
+      ],
+      "goals": ["a + 0 = 0 + a", "∀ b, a + b = b + a → a + succ b = succ b + a"]
+    },
+    {
+      "tactic": "| zero => simp",
+      "label": "Base case: b = 0",
+      "explanation": "a + 0 = a by definition. 0 + a = a by Nat.zero_add. So both sides equal a. simp handles this automatically.",
+      "hypotheses": [
+        { "name": "a", "type": "Nat" }
+      ],
+      "goals": ["∀ b, a + b = b + a → a + succ b = succ b + a"]
+    },
+    {
+      "tactic": "| succ b ih =>",
+      "label": "Successor case: assume commutativity for b",
+      "explanation": "We have ih : a + b = b + a and must prove a + succ b = succ b + a. The challenge: addition recurses on the right, so succ on the left (succ b + a) doesn't unfold directly.",
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat", "new": true },
+        { "name": "ih", "type": "a + b = b + a", "new": true }
+      ],
+      "goals": ["a + succ b = succ b + a"]
+    },
+    {
+      "tactic": "simp [Nat.add_succ, Nat.succ_add]",
+      "label": "Rewrite successors on both sides",
+      "explanation": "Nat.add_succ: a + succ b = succ (a + b). Nat.succ_add: succ b + a = succ (b + a). Now the goal is succ (a + b) = succ (b + a), which reduces to a + b = b + a.",
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" },
+        { "name": "ih", "type": "a + b = b + a" }
+      ],
+      "goals": ["a + b = b + a"]
+    },
+    {
+      "tactic": "exact ih",
+      "label": "Apply the induction hypothesis",
+      "explanation": "The goal is exactly ih. Commutativity proved!",
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" },
+        { "name": "ih", "type": "a + b = b + a" }
+      ],
+      "goals": [],
+      "qed": true
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "theorem": "rw_demo (a b : Nat) (h : a = b) : a + 1 = b + 1",
+  "steps": [
+    {
+      "label": "Initial proof state",
+      "tactic": null,
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" },
+        { "name": "h", "type": "a = b" }
+      ],
+      "goals": ["a + 1 = b + 1"]
+    },
+    {
+      "tactic": "rw [h]",
+      "label": "Rewrite a to b using h",
+      "explanation": "h : a = b tells us a and b are the same. rw [h] finds every 'a' in the goal and replaces it with 'b'. The goal a + 1 = b + 1 becomes b + 1 = b + 1.",
+      "strategy": {
+        "rule": "To transform the goal, rewrite using a known equality",
+        "trigger": "You have h : a = b and the goal contains a"
+      },
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" },
+        { "name": "h", "type": "a = b" }
+      ],
+      "goals": ["b + 1 = b + 1"]
+    },
+    {
+      "tactic": "rfl",
+      "label": "Both sides are identical",
+      "explanation": "After rewriting, both sides are b + 1. rfl closes any goal of the form x = x.",
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" },
+        { "name": "h", "type": "a = b" }
+      ],
+      "goals": [],
+      "qed": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case analysis — if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Proof Strategies</a> / Case analysis</p>
+
+        <h1>Strategy: Case analysis</h1>
+
+        <h2>Pattern recognition</h2>
+
+        <p><strong>When you see:</strong> a hypothesis of the form <code>h : P &or; Q</code></p>
+        <p><strong>Strategy:</strong> Consider each case separately. Prove the goal assuming P, then prove it again assuming Q.</p>
+        <p><strong>Tactic:</strong> <code>rcases h with hp | hq</code></p>
+
+        <p>A disjunction <code>P &or; Q</code> tells you one of two things is true, but not which. To use it, you must handle both possibilities. This creates two subgoals with the same target but different hypotheses.</p>
+
+        <p>This is Velleman's "proof by cases" &mdash; when your information branches, your proof must branch too.</p>
+
+        <h2>Watch the strategy in action</h2>
+
+        <div id="case-analysis-stepper"></div>
+
+        <h2>The rule</h2>
+
+<pre>Hypothesis:  h : P &or; Q
+Action:      rcases h with hp | hq
+Effect:      Two subgoals created:
+             Case 1: hp : P, prove the goal
+             Case 2: hq : Q, prove the goal
+Think:       "Either P or Q is true. Handle both."</pre>
+
+        <h2>Your turn</h2>
+
+        <p>Prove that <code>Or</code> is associative (one direction): if <code>(P &or; Q) &or; R</code> then <code>P &or; (Q &or; R)</code>.</p>
+
+<pre>theorem or_assoc_mp (P Q R : Prop) (h : (P &or; Q) &or; R) : P &or; (Q &or; R) := by
+  sorry</pre>
+
+        <details class="hint">
+            <summary>Hint</summary>
+            <div class="hint-content">
+                <p>Case split on <code>h</code> first to get <code>P &or; Q</code> vs <code>R</code>. Then case split again on the <code>P &or; Q</code> case. Use <code>Or.inl</code> and <code>Or.inr</code> to build the result.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre>theorem or_assoc_mp (P Q R : Prop) (h : (P &or; Q) &or; R) : P &or; (Q &or; R) := by
+  rcases h with hpq | hr
+  &middot; rcases hpq with hp | hq
+    &middot; exact Or.inl hp
+    &middot; exact Or.inr (Or.inl hq)
+  &middot; exact Or.inr (Or.inr hr)</pre>
+            </div>
+        </details>
+
+        <p class="track-desc" style="margin-top: 2rem; font-size: 0.9rem;"><strong>See also:</strong> <a href="../logic/04-or.html">Logic &sect;04 &mdash; Disjunction</a></p>
+
+        <div class="exercise-nav">
+            <a href="02-split-the-goal.html">&larr; Split the goal</a>
+            <a href="04-contradiction.html">Contradiction &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+    <script src="../../js/stepper.js"></script>
+    <script>
+    fetch('../../js/proofs/strategies-03-case-analysis.json')
+      .then(r => r.json())
+      .then(data => ProofStepper.mount('case-analysis-stepper', data));
+    </script>
+</body>
+</html>

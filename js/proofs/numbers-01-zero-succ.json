@@ -1,0 +1,48 @@
+{
+  "theorem": "zero_add (n : Nat) : 0 + n = n",
+  "steps": [
+    {
+      "label": "Initial proof state",
+      "tactic": null,
+      "hypotheses": [
+        { "name": "n", "type": "Nat" }
+      ],
+      "goals": ["0 + n = n"]
+    },
+    {
+      "tactic": "induction n with",
+      "label": "Induct on n",
+      "explanation": "Since addition recurses on the second argument, we induct on n. This creates two subgoals: the base case (n = 0) and the successor case (n = succ n).",
+      "hypotheses": [],
+      "goals": ["0 + 0 = 0", "∀ n, 0 + n = n → 0 + succ n = succ n"]
+    },
+    {
+      "tactic": "| zero => rfl",
+      "label": "Base case: n = 0",
+      "explanation": "0 + 0 reduces to 0 by the definition of addition (n + 0 = n). Both sides are definitionally equal, so rfl closes the goal.",
+      "hypotheses": [],
+      "goals": ["∀ n, 0 + n = n → 0 + succ n = succ n"]
+    },
+    {
+      "tactic": "| succ n ih =>",
+      "label": "Successor case: assume the result for n",
+      "explanation": "We now have n : Nat and the induction hypothesis ih : 0 + n = n. We must prove 0 + succ n = succ n.",
+      "hypotheses": [
+        { "name": "n", "type": "Nat", "new": true },
+        { "name": "ih", "type": "0 + n = n", "new": true }
+      ],
+      "goals": ["0 + succ n = succ n"]
+    },
+    {
+      "tactic": "simp [Nat.add_succ, ih]",
+      "label": "Simplify using add_succ and the IH",
+      "explanation": "Nat.add_succ rewrites 0 + succ n to succ (0 + n). Then ih rewrites 0 + n to n. The goal becomes succ n = succ n, which is true by rfl.",
+      "hypotheses": [
+        { "name": "n", "type": "Nat" },
+        { "name": "ih", "type": "0 + n = n" }
+      ],
+      "goals": [],
+      "qed": true
+    }
+  ]
+}

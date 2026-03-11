@@ -1,0 +1,55 @@
+{
+  "theorem": "or_symm (P Q : Prop) (h : P ∨ Q) : Q ∨ P",
+  "steps": [
+    {
+      "label": "Initial proof state",
+      "tactic": null,
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "h", "type": "P ∨ Q" }
+      ],
+      "goals": ["Q ∨ P"]
+    },
+    {
+      "tactic": "rcases h with hp | hq",
+      "label": "Case split on the disjunction",
+      "explanation": "h : P ∨ Q tells us one of P or Q is true. We split into two cases: one where P holds, one where Q holds. The proof must handle both.",
+      "strategy": {
+        "rule": "To use P ∨ Q, consider both cases separately",
+        "trigger": "You have h : _ ∨ _ in context"
+      },
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "hp", "type": "P", "new": true }
+      ],
+      "goals": ["Q ∨ P", "Q ∨ P"],
+      "removed": ["h"]
+    },
+    {
+      "tactic": "exact Or.inr hp",
+      "label": "Case 1: P is true, inject into the right",
+      "explanation": "We have hp : P and need Q ∨ P. Since P is the right side, we use Or.inr to inject hp into the right branch of the disjunction.",
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "hp", "type": "P" }
+      ],
+      "goals": ["Q ∨ P"]
+    },
+    {
+      "tactic": "exact Or.inl hq",
+      "label": "Case 2: Q is true, inject into the left",
+      "explanation": "Now in the second case, we have hq : Q. To prove Q ∨ P, we use Or.inl to inject into the left. Both cases handled!",
+      "hypotheses": [
+        { "name": "P", "type": "Prop" },
+        { "name": "Q", "type": "Prop" },
+        { "name": "hq", "type": "Q", "new": true }
+      ],
+      "goals": [],
+      "removed": ["hp"],
+      "qed": true
+    }
+  ]
+}

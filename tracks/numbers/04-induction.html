@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
 </head>
 <body>
     <nav>
@@ -42,6 +43,12 @@
   -- prove P(n + 1) here</pre>
 
         <p>The <code>ih</code> in the successor branch is the <strong>induction hypothesis</strong> — the assumption that the property holds for <code>n</code>. You get to use it for free when proving the property for <code>n + 1</code>.</p>
+
+        <h2>Watch the proof</h2>
+
+        <p>Step through the induction proof. Watch how the base case is a concrete computation and the inductive step uses <code>ih</code> to bridge from n to n+1.</p>
+
+        <div id="pow-two-stepper"></div>
 
         <h2>Exercise</h2>
 
@@ -116,5 +123,11 @@
         <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
         <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
     </footer>
+    <script src="../../js/stepper.js"></script>
+    <script>
+    fetch('../../js/proofs/numbers-04-induction.json')
+      .then(r => r.json())
+      .then(data => ProofStepper.mount('pow-two-stepper', data));
+    </script>
 </body>
 </html>

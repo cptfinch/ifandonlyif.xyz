@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
 </head>
 <body>
     <nav>
@@ -40,6 +41,12 @@
         <p>Lean 4 includes the <code>omega</code> tactic, which automatically decides linear arithmetic over natural numbers and integers. It can prove any true statement involving addition, subtraction, multiplication by constants, and comparisons. For a theorem like associativity, <code>omega</code> closes the goal instantly.</p>
 
         <p>But using <code>omega</code> on everything is like using a calculator in a maths class — you get the answer but miss the lesson. In this exercise, try the manual proof first.</p>
+
+        <h2>Watch the proof</h2>
+
+        <p>Step through the induction proof. Watch how <code>Nat.add_succ</code> transforms the goal in the successor case.</p>
+
+        <div id="add-assoc-stepper"></div>
 
         <h2>Exercise</h2>
 
@@ -96,5 +103,11 @@
         <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
         <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
     </footer>
+    <script src="../../js/stepper.js"></script>
+    <script>
+    fetch('../../js/proofs/numbers-02-add-assoc.json')
+      .then(r => r.json())
+      .then(data => ProofStepper.mount('add-assoc-stepper', data));
+    </script>
 </body>
 </html>

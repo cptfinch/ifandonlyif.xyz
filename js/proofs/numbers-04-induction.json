@@ -1,0 +1,58 @@
+{
+  "theorem": "pow_two_pos (n : Nat) : 0 < 2 ^ n",
+  "steps": [
+    {
+      "label": "Initial proof state",
+      "tactic": null,
+      "hypotheses": [
+        { "name": "n", "type": "Nat" }
+      ],
+      "goals": ["0 < 2 ^ n"]
+    },
+    {
+      "tactic": "induction n with",
+      "label": "Induct on n",
+      "explanation": "We prove this for all natural numbers by induction. Base case: 0 < 2⁰. Inductive step: if 0 < 2ⁿ then 0 < 2ⁿ⁺¹.",
+      "hypotheses": [],
+      "goals": ["0 < 2 ^ 0", "∀ n, 0 < 2 ^ n → 0 < 2 ^ (n + 1)"]
+    },
+    {
+      "tactic": "| zero => decide",
+      "label": "Base case: 2⁰ = 1 > 0",
+      "explanation": "2 ^ 0 = 1 by definition. 0 < 1 is a concrete decidable proposition. The decide tactic evaluates it and confirms it's true.",
+      "hypotheses": [],
+      "goals": ["∀ n, 0 < 2 ^ n → 0 < 2 ^ (n + 1)"]
+    },
+    {
+      "tactic": "| succ n ih =>",
+      "label": "Successor case: assume 0 < 2ⁿ",
+      "explanation": "We get the induction hypothesis ih : 0 < 2 ^ n and must prove 0 < 2 ^ (n + 1). Since 2^(n+1) = 2 * 2^n, and 2^n > 0, the result follows.",
+      "hypotheses": [
+        { "name": "n", "type": "Nat", "new": true },
+        { "name": "ih", "type": "0 < 2 ^ n", "new": true }
+      ],
+      "goals": ["0 < 2 ^ (n + 1)"]
+    },
+    {
+      "tactic": "simp [Nat.pow_succ, Nat.mul_comm]",
+      "label": "Unfold 2^(n+1) = 2^n * 2",
+      "explanation": "Nat.pow_succ rewrites 2 ^ (n+1) to 2 ^ n * 2. The goal becomes 0 < 2 ^ n * 2. Since ih tells us 2 ^ n > 0, multiplying by 2 keeps it positive.",
+      "hypotheses": [
+        { "name": "n", "type": "Nat" },
+        { "name": "ih", "type": "0 < 2 ^ n" }
+      ],
+      "goals": ["0 < 2 ^ n * 2"]
+    },
+    {
+      "tactic": "omega",
+      "label": "Linear arithmetic closes the goal",
+      "explanation": "omega knows that if 0 < 2 ^ n (from ih) then 0 < 2 ^ n * 2. The multiplication by a positive constant preserves positivity. Done!",
+      "hypotheses": [
+        { "name": "n", "type": "Nat" },
+        { "name": "ih", "type": "0 < 2 ^ n" }
+      ],
+      "goals": [],
+      "qed": true
+    }
+  ]
+}

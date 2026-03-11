@@ -1,0 +1,84 @@
+{
+  "theorem": "my_mul_add (a b c : Nat) : a * (b + c) = a * b + a * c",
+  "steps": [
+    {
+      "label": "Initial proof state",
+      "tactic": null,
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" },
+        { "name": "c", "type": "Nat" }
+      ],
+      "goals": ["a * (b + c) = a * b + a * c"]
+    },
+    {
+      "tactic": "induction c with",
+      "label": "Induct on c (the recursion variable)",
+      "explanation": "Both addition and multiplication recurse on the second argument, so we induct on c. Base case: a * (b + 0) = a * b + a * 0. Inductive step: assume the result for c, prove for succ c.",
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" }
+      ],
+      "goals": ["a * (b + 0) = a * b + a * 0", "∀ c, a * (b + c) = a * b + a * c → a * (b + succ c) = a * b + a * succ c"]
+    },
+    {
+      "tactic": "| zero => simp [Nat.mul_zero, Nat.add_zero]",
+      "label": "Base case: c = 0",
+      "explanation": "a * (b + 0) = a * b by Nat.add_zero. a * b + a * 0 = a * b + 0 = a * b by Nat.mul_zero and Nat.add_zero. Both sides equal a * b.",
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" }
+      ],
+      "goals": ["∀ c, a * (b + c) = a * b + a * c → a * (b + succ c) = a * b + a * succ c"]
+    },
+    {
+      "tactic": "| succ c ih =>",
+      "label": "Successor case: assume distributivity for c",
+      "explanation": "We have ih : a * (b + c) = a * b + a * c and must prove the same for succ c. This requires unfolding both addition and multiplication on successors.",
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" },
+        { "name": "c", "type": "Nat", "new": true },
+        { "name": "ih", "type": "a * (b + c) = a * b + a * c", "new": true }
+      ],
+      "goals": ["a * (b + succ c) = a * b + a * succ c"]
+    },
+    {
+      "tactic": "rw [Nat.add_succ, Nat.mul_succ, Nat.mul_succ]",
+      "label": "Unfold definitions on successors",
+      "explanation": "Nat.add_succ: b + succ c = succ (b + c). Nat.mul_succ (twice): a * succ n = a * n + a. The left side becomes a * (b + c) + a. The right side becomes a * b + (a * c + a).",
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" },
+        { "name": "c", "type": "Nat" },
+        { "name": "ih", "type": "a * (b + c) = a * b + a * c" }
+      ],
+      "goals": ["a * (b + c) + a = a * b + (a * c + a)"]
+    },
+    {
+      "tactic": "rw [ih]",
+      "label": "Apply the induction hypothesis",
+      "explanation": "ih rewrites a * (b + c) to a * b + a * c on the left side. Now the goal is (a * b + a * c) + a = a * b + (a * c + a).",
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" },
+        { "name": "c", "type": "Nat" },
+        { "name": "ih", "type": "a * (b + c) = a * b + a * c" }
+      ],
+      "goals": ["a * b + a * c + a = a * b + (a * c + a)"]
+    },
+    {
+      "tactic": "rw [Nat.add_assoc]",
+      "label": "Reassociate with add_assoc",
+      "explanation": "Nat.add_assoc rewrites (a * b + a * c) + a to a * b + (a * c + a). Both sides are now identical. QED!",
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" },
+        { "name": "c", "type": "Nat" },
+        { "name": "ih", "type": "a * (b + c) = a * b + a * c" }
+      ],
+      "goals": [],
+      "qed": true
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Existential witness — if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Proof Strategies</a> / Existential witness</p>
+
+        <h1>Strategy: Provide a witness</h1>
+
+        <h2>Pattern recognition</h2>
+
+        <p><strong>When you see:</strong> a goal of the form <code>&exist; x, P(x)</code></p>
+        <p><strong>Strategy:</strong> Name a specific value and prove it satisfies the property.</p>
+        <p><strong>Tactic:</strong> <code>use t</code> or <code>exact &langle;t, proof&rangle;</code></p>
+
+        <p>To prove something exists, you must <em>produce</em> it. The <code>use</code> tactic lets you supply a specific witness, then the goal changes to proving the property holds for that witness.</p>
+
+        <p>To <em>use</em> an existential hypothesis, <code>obtain &langle;x, hx&rangle; := h</code> gives you the witness and its proof.</p>
+
+        <h2>Watch the strategy in action</h2>
+
+        <div id="witness-stepper"></div>
+
+        <h2>The rule</h2>
+
+<pre>Goal shape:  &exist; x, P(x)
+Action:      use t
+Effect:      Goal becomes P(t) — prove the property for your witness
+Think:       "I claim t works. Now I prove it."
+
+Hypothesis:  h : &exist; x, P(x)
+Action:      obtain &langle;x, hx&rangle; := h
+Effect:      x : T and hx : P(x) appear in context
+Think:       "Name the thing that exists and its proof."</pre>
+
+        <h2>Your turn</h2>
+
+        <p>Prove that there exists a natural number greater than 100.</p>
+
+<pre>theorem exists_big : &exist; n : Nat, n &gt; 100 := by
+  sorry</pre>
+
+        <details class="hint">
+            <summary>Hint</summary>
+            <div class="hint-content">
+                <p>Use <code>use 101</code>. Then prove <code>101 &gt; 100</code>.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre>theorem exists_big : &exist; n : Nat, n &gt; 100 := by
+  use 101
+  omega</pre>
+            </div>
+        </details>
+
+        <div class="exercise-nav">
+            <a href="05-induction.html">&larr; Induction</a>
+            <a href="07-rewriting.html">Rewriting &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+    <script src="../../js/stepper.js"></script>
+    <script>
+    fetch('../../js/proofs/strategies-06-witness.json')
+      .then(r => r.json())
+      .then(data => ProofStepper.mount('witness-stepper', data));
+    </script>
+</body>
+</html>

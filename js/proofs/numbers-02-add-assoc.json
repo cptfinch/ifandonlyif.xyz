@@ -1,0 +1,72 @@
+{
+  "theorem": "my_add_assoc (a b c : Nat) : (a + b) + c = a + (b + c)",
+  "steps": [
+    {
+      "label": "Initial proof state",
+      "tactic": null,
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" },
+        { "name": "c", "type": "Nat" }
+      ],
+      "goals": ["(a + b) + c = a + (b + c)"]
+    },
+    {
+      "tactic": "induction c with",
+      "label": "Induct on c (the recursion variable)",
+      "explanation": "Addition recurses on the second argument, so we induct on c. This gives us a base case (c = 0) and a successor case (c = succ c) with an induction hypothesis.",
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" }
+      ],
+      "goals": ["(a + b) + 0 = a + (b + 0)", "∀ c, (a + b) + c = a + (b + c) → (a + b) + succ c = a + (b + succ c)"]
+    },
+    {
+      "tactic": "| zero => rfl",
+      "label": "Base case: c = 0",
+      "explanation": "Both n + 0 = n by definition. So (a + b) + 0 = a + b and a + (b + 0) = a + b. Both sides are definitionally equal.",
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" }
+      ],
+      "goals": ["∀ c, (a + b) + c = a + (b + c) → (a + b) + succ c = a + (b + succ c)"]
+    },
+    {
+      "tactic": "| succ c ih =>",
+      "label": "Successor case: assume the result for c",
+      "explanation": "We get ih : (a + b) + c = a + (b + c) and must prove the same for succ c.",
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" },
+        { "name": "c", "type": "Nat", "new": true },
+        { "name": "ih", "type": "(a + b) + c = a + (b + c)", "new": true }
+      ],
+      "goals": ["(a + b) + succ c = a + (b + succ c)"]
+    },
+    {
+      "tactic": "simp [Nat.add_succ]",
+      "label": "Unfold addition on successors",
+      "explanation": "Nat.add_succ says n + succ m = succ (n + m). Applied to both sides: left becomes succ ((a + b) + c), right becomes succ (a + (b + c)). Now we need succ ((a + b) + c) = succ (a + (b + c)).",
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" },
+        { "name": "c", "type": "Nat" },
+        { "name": "ih", "type": "(a + b) + c = a + (b + c)" }
+      ],
+      "goals": ["(a + b) + c = a + (b + c)"]
+    },
+    {
+      "tactic": "exact ih",
+      "label": "Apply the induction hypothesis",
+      "explanation": "The goal is exactly our induction hypothesis. Done!",
+      "hypotheses": [
+        { "name": "a", "type": "Nat" },
+        { "name": "b", "type": "Nat" },
+        { "name": "c", "type": "Nat" },
+        { "name": "ih", "type": "(a + b) + c = a + (b + c)" }
+      ],
+      "goals": [],
+      "qed": true
+    }
+  ]
+}

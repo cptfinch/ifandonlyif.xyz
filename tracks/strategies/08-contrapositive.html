@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrapositive — if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Proof Strategies</a> / Contrapositive</p>
+
+        <h1>Strategy: Contrapositive</h1>
+
+        <h2>Pattern recognition</h2>
+
+        <p><strong>When you see:</strong> a goal <code>P &rarr; Q</code> where proving directly is hard, but <code>&not;Q &rarr; &not;P</code> is easier</p>
+        <p><strong>Strategy:</strong> Prove the contrapositive instead.</p>
+        <p><strong>Tactic:</strong> <code>contrapose</code></p>
+
+        <p>The contrapositive of <code>P &rarr; Q</code> is <code>&not;Q &rarr; &not;P</code>. They are logically equivalent (in classical logic). Sometimes the contrapositive is much easier to prove &mdash; especially when the conclusion Q is something concrete you can negate.</p>
+
+        <p>The <code>contrapose</code> tactic transforms the goal from <code>P &rarr; Q</code> to <code>&not;Q &rarr; &not;P</code>. You can also use <code>contrapose!</code> which additionally pushes negations inward (turning <code>&not;(a = b)</code> into <code>a &ne; b</code>, etc.).</p>
+
+        <h2>Watch the strategy in action</h2>
+
+        <div id="contrapositive-stepper"></div>
+
+        <h2>The rule</h2>
+
+<pre>Goal shape:  P &rarr; Q       (where direct proof is hard)
+Action:      contrapose
+Effect:      Goal becomes &not;Q &rarr; &not;P
+Think:       "Instead of 'if P then Q', prove 'if not Q then not P'."
+
+Variant:     contrapose!
+Effect:      Same, but also simplifies negations
+             (e.g., &not;(a &le; b) becomes b &lt; a)</pre>
+
+        <h2>Your turn</h2>
+
+        <p>Prove: if <code>n * m = 0</code> then <code>n = 0 &or; m = 0</code>. The contrapositive is easier: if neither is zero, their product isn't zero.</p>
+
+<pre>theorem mul_eq_zero (n m : Nat) : n * m = 0 &rarr; n = 0 &or; m = 0 := by
+  sorry</pre>
+
+        <details class="hint">
+            <summary>Hint</summary>
+            <div class="hint-content">
+                <p>Use <code>contrapose!</code> to get the goal <code>n &ne; 0 &and; m &ne; 0 &rarr; n * m &ne; 0</code>. Then <code>intro &langle;hn, hm&rangle;</code> and use <code>omega</code> or <code>Nat.mul_pos</code>.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre>theorem mul_eq_zero (n m : Nat) : n * m = 0 &rarr; n = 0 &or; m = 0 := by
+  contrapose!
+  intro &langle;hn, hm&rangle;
+  exact Nat.mul_pos (Nat.pos_of_ne_zero hn) (Nat.pos_of_ne_zero hm)</pre>
+                <p>Or more concisely:</p>
+<pre>theorem mul_eq_zero (n m : Nat) : n * m = 0 &rarr; n = 0 &or; m = 0 := by
+  contrapose!
+  intro &langle;hn, hm&rangle;
+  omega</pre>
+            </div>
+        </details>
+
+        <div class="exercise-nav">
+            <a href="07-rewriting.html">&larr; Rewriting</a>
+            <a href="/">&larr; All tracks</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+    <script src="../../js/stepper.js"></script>
+    <script>
+    fetch('../../js/proofs/strategies-08-contrapositive.json')
+      .then(r => r.json())
+      .then(data => ProofStepper.mount('contrapositive-stepper', data));
+    </script>
+</body>
+</html>

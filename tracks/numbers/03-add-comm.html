@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
 </head>
 <body>
     <nav>
@@ -32,6 +33,12 @@
 <pre>Nat.succ_add (n m : Nat) : succ n + m = succ (n + m)</pre>
 
         <p>Together with <code>Nat.zero_add</code> (which we proved in exercise 01) and <code>Nat.add_succ</code>, these lemmas let you shuffle successors between left and right until both sides match.</p>
+
+        <h2>Watch the proof</h2>
+
+        <p>See how commutativity requires <em>two</em> rewrite lemmas (<code>add_succ</code> and <code>succ_add</code>) to shuffle the successor across the operator.</p>
+
+        <div id="add-comm-stepper"></div>
 
         <h2>Exercise</h2>
 
@@ -89,5 +96,11 @@
         <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
         <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
     </footer>
+    <script src="../../js/stepper.js"></script>
+    <script>
+    fetch('../../js/proofs/numbers-03-add-comm.json')
+      .then(r => r.json())
+      .then(data => ProofStepper.mount('add-comm-stepper', data));
+    </script>
 </body>
 </html>

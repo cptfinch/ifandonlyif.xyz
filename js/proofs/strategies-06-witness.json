@@ -1,0 +1,30 @@
+{
+  "theorem": "exists_even : ∃ n : Nat, n % 2 = 0",
+  "steps": [
+    {
+      "label": "Initial proof state",
+      "tactic": null,
+      "hypotheses": [],
+      "goals": ["∃ n, n % 2 = 0"]
+    },
+    {
+      "tactic": "use 42",
+      "label": "Provide a witness: 42",
+      "explanation": "To prove something exists, we must produce a concrete example. We claim 42 is an even number. The goal now changes: instead of proving existence, we prove 42 satisfies the property.",
+      "strategy": {
+        "rule": "To prove ∃ x, P(x), supply a specific value with 'use'",
+        "trigger": "Goal has shape ∃ _, _"
+      },
+      "hypotheses": [],
+      "goals": ["42 % 2 = 0"]
+    },
+    {
+      "tactic": "rfl",
+      "label": "42 % 2 = 0 by computation",
+      "explanation": "Lean computes 42 % 2 = 0. Both sides are definitionally equal, so rfl closes the goal.",
+      "hypotheses": [],
+      "goals": [],
+      "qed": true
+    }
+  ]
+}

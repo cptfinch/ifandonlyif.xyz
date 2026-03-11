@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
 </head>
 <body>
     <nav>
@@ -38,6 +39,12 @@
   | n, Nat.succ m => Nat.mul n m + n</pre>
 
         <p>So <code>a * 0 = 0</code> by definition, and <code>a * succ m = a * m + a</code>. Proving distributivity requires combining everything we have learned: induction, associativity, commutativity, and careful rewriting.</p>
+
+        <h2>Watch the proof</h2>
+
+        <p>This is the most complex proof in the track. Step through it to see how induction, rewriting, and associativity combine to prove distributivity.</p>
+
+        <div id="mul-distrib-stepper"></div>
 
         <h2>Exercise</h2>
 
@@ -131,5 +138,11 @@
         <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
         <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
     </footer>
+    <script src="../../js/stepper.js"></script>
+    <script>
+    fetch('../../js/proofs/numbers-05-mul-distrib.json')
+      .then(r => r.json())
+      .then(data => ProofStepper.mount('mul-distrib-stepper', data));
+    </script>
 </body>
 </html>
