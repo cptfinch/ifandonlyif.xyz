@@ -1,5 +1,6 @@
 {
   "theorem": "not_not_intro (P : Prop) (hp : P) : ¬¬P",
+  "gentzen": { "rule": "¬-Intro", "also_known_as": "Negation introduction", "see_also": "tracks/proof-theory/08-negation-intro.html" },
   "steps": [
     {
       "label": "Initial proof state",

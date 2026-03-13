@@ -1,5 +1,10 @@
 {
   "theorem": "modus_ponens (P Q : Prop) (hpq : P → Q) (hp : P) : Q",
+  "gentzen": {
+    "rule": "→-Elim",
+    "also_known_as": "Modus ponens",
+    "see_also": "tracks/proof-theory/02-modus-ponens.html"
+  },
   "steps": [
     {
       "label": "Initial proof state",

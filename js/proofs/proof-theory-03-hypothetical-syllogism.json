@@ -1,0 +1,92 @@
+{
+  "theorem": "P → Q, Q → R ⊢ P → R",
+  "notation": "gentzen",
+  "steps": [
+    {
+      "label": "What we want to prove",
+      "rule": null,
+      "explanation": "Given P → Q and Q → R, prove P → R. This is the hypothetical syllogism — chaining two implications together. If P implies Q and Q implies R, then P implies R.",
+      "tree": {
+        "conclusion": "P → R",
+        "rule": "?",
+        "premises": [{ "conclusion": "?", "label": "?" }]
+      }
+    },
+    {
+      "label": "To prove P → R, assume P",
+      "rule": "→-Intro",
+      "explanation": "Our goal is an implication P → R, so we use →-Intro: assume P (marking it with [P]¹ to show it will be discharged) and try to derive R.",
+      "lean_tactic": "intro hp",
+      "tree": {
+        "conclusion": "P → R",
+        "rule": "→-Intro",
+        "discharged": "1",
+        "premises": [
+          {
+            "conclusion": "R",
+            "rule": "?",
+            "premises": [
+              { "conclusion": "P", "assumption": true, "discharged": "1" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "Apply →-Elim to get Q",
+      "rule": "→-Elim",
+      "explanation": "We have P (our assumption) and P → Q (given). By →-Elim, we get Q.",
+      "lean_tactic": "have hq := hpq hp",
+      "tree": {
+        "conclusion": "P → R",
+        "rule": "→-Intro",
+        "discharged": "1",
+        "premises": [
+          {
+            "conclusion": "R",
+            "rule": "?",
+            "premises": [
+              {
+                "conclusion": "Q",
+                "rule": "→-Elim",
+                "premises": [
+                  { "conclusion": "P", "assumption": true, "discharged": "1" },
+                  { "conclusion": "P → Q", "label": "premise" }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "Apply →-Elim again to get R",
+      "rule": "→-Elim",
+      "explanation": "Now we have Q and Q → R (given). By →-Elim again, we get R. The tree is complete — every leaf is either a premise or a discharged assumption.",
+      "lean_tactic": "exact hqr (hpq hp)",
+      "tree": {
+        "conclusion": "P → R",
+        "rule": "→-Intro",
+        "discharged": "1",
+        "premises": [
+          {
+            "conclusion": "R",
+            "rule": "→-Elim",
+            "premises": [
+              {
+                "conclusion": "Q",
+                "rule": "→-Elim",
+                "premises": [
+                  { "conclusion": "P", "assumption": true, "discharged": "1" },
+                  { "conclusion": "P → Q", "label": "premise" }
+                ]
+              },
+              { "conclusion": "Q → R", "label": "premise" }
+            ]
+          }
+        ]
+      },
+      "qed": true
+    }
+  ]
+}

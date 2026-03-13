@@ -1,0 +1,31 @@
+{
+  "theorem": "⊢ P → P",
+  "notation": "gentzen",
+  "steps": [
+    {
+      "label": "What we want to prove",
+      "rule": null,
+      "explanation": "We need to prove P → P. In natural deduction, this means: assuming P, we can derive P. The turnstile ⊢ means 'we can prove'.",
+      "tree": {
+        "conclusion": "P → P",
+        "rule": "?",
+        "premises": [{ "conclusion": "?", "label": "?" }]
+      }
+    },
+    {
+      "label": "Assume P (open a subproof)",
+      "rule": "→-Intro",
+      "explanation": "To prove P → Q, assume P and derive Q. Here P and Q are both P. We open a subproof by assuming P — this is marked with brackets [P] to show it's a temporary assumption.",
+      "lean_tactic": "intro h",
+      "tree": {
+        "conclusion": "P → P",
+        "rule": "→-Intro",
+        "discharged": "1",
+        "premises": [
+          { "conclusion": "P", "assumption": true, "discharged": "1" }
+        ]
+      },
+      "qed": true
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>&not;-Intro: Proving a negation &mdash; if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
+    <link rel="stylesheet" href="../../js/gentzen.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Proof Theory</a> / &not;-Intro</p>
+
+        <h1>&not;-Intro: Proving a negation</h1>
+
+        <h2>The rule</h2>
+
+        <p><strong>&not;P means P &rarr; &perp;. To prove &not;P, assume P and derive a contradiction.</strong></p>
+
+        <p>In natural deduction, negation is defined as implication to absurdity. The rule &not;-Intro is therefore a special case of &rarr;-Intro: you assume P, derive the absurd proposition &perp;, and conclude &not;P. The assumption P is discharged, just as in &rarr;-Intro.</p>
+
+        <h2>Gentzen notation</h2>
+
+<pre> [P]&sup1;
+  &vellip;
+  &perp;
+&mdash;&mdash;&mdash;&mdash;&mdash; &not;-Intro&sup1;
+ &not;P</pre>
+
+        <h2>Watch the proof build</h2>
+
+        <div id="neg-intro-stepper"></div>
+
+        <h2>In any prover</h2>
+
+        <table>
+            <tr><th>Prover</th><th>Syntax</th></tr>
+            <tr><td>Lean 4</td><td><code>intro h</code> (since &not;P = P &rarr; False)</td></tr>
+            <tr><td>Coq</td><td><code>intro H</code></td></tr>
+            <tr><td>Agda</td><td><code>&lambda; h &rarr; &hellip;</code></td></tr>
+        </table>
+
+        <p class="track-desc" style="margin-top: 2rem; font-size: 0.9rem;"><strong>See also:</strong> <a href="../strategies/04-contradiction.html">Strategies &sect;04 &mdash; Contradiction</a></p>
+
+        <h2>Your turn</h2>
+
+        <p>Prove <code>&not;(P &and; &not;P)</code>. Assume P &and; &not;P and extract a contradiction.</p>
+
+        <details class="hint">
+            <summary>Hint</summary>
+            <div class="hint-content">
+                <p>Assume P &and; &not;P. Use &and;-Elim&sub1; to get P and &and;-Elim&sub2; to get &not;P. Then apply &not;P to P (via &rarr;-Elim, since &not;P is P &rarr; &perp;) to obtain &perp;.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre> [P &and; &not;P]&sup1;          [P &and; &not;P]&sup1;
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &and;-Elim&sub1;  &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &and;-Elim&sub2;
+     P               &not;P
+    &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &rarr;-Elim
+            &perp;
+     &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &not;-Intro&sup1;
+        &not;(P &and; &not;P)</pre>
+            </div>
+        </details>
+
+        <div class="exercise-nav">
+            <a href="07-disjunction-elim.html">&larr; &or;-Elim</a>
+            <a href="09-ex-falso.html">&perp;-Elim &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+    <script src="../../js/gentzen.js"></script>
+    <script>
+    fetch('../../js/proofs/proof-theory-08-negation-intro.json')
+      .then(r => r.json())
+      .then(data => GentzenTree.mountStepper('neg-intro-stepper', data));
+    </script>
+</body>
+</html>

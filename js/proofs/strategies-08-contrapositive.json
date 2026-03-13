@@ -1,5 +1,6 @@
 {
   "theorem": "contrapose_demo (P Q : Prop) [Decidable P] [Decidable Q] (h : P → Q) : ¬Q → ¬P",
+  "gentzen": { "rule": "→-Intro + ¬-Intro", "also_known_as": "Contrapositive", "see_also": "tracks/proof-theory/01-implication-intro.html" },
   "steps": [
     {
       "label": "Initial proof state",

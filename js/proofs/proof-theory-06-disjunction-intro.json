@@ -1,0 +1,30 @@
+{
+  "theorem": "P ⊢ P ∨ Q",
+  "notation": "gentzen",
+  "steps": [
+    {
+      "label": "What we want to prove",
+      "rule": null,
+      "explanation": "Given P, prove P ∨ Q (P or Q). If you know P is true, then 'P or Q' is automatically true — regardless of Q. This might feel strange: you can prove 'P or anything' just from P alone.",
+      "tree": {
+        "conclusion": "P ∨ Q",
+        "rule": "?",
+        "premises": [{ "conclusion": "?", "label": "?" }]
+      }
+    },
+    {
+      "label": "Apply ∨-Intro₁ (inject left)",
+      "rule": "∨-Intro₁",
+      "explanation": "∨-Introduction₁ says: if you have P, you can conclude P ∨ Q for any Q. You're 'injecting' your proof of P into the left side of the disjunction. The right side (Q) can be anything at all.",
+      "lean_tactic": "exact Or.inl hp",
+      "tree": {
+        "conclusion": "P ∨ Q",
+        "rule": "∨-Intro₁",
+        "premises": [
+          { "conclusion": "P", "label": "premise" }
+        ]
+      },
+      "qed": true
+    }
+  ]
+}

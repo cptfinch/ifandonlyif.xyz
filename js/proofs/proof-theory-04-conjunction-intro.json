@@ -1,0 +1,31 @@
+{
+  "theorem": "P, Q ⊢ P ∧ Q",
+  "notation": "gentzen",
+  "steps": [
+    {
+      "label": "What we want to prove",
+      "rule": null,
+      "explanation": "Given P and Q, prove P ∧ Q (P and Q). To prove a conjunction, we need to prove both sides.",
+      "tree": {
+        "conclusion": "P ∧ Q",
+        "rule": "?",
+        "premises": [{ "conclusion": "?", "label": "?" }]
+      }
+    },
+    {
+      "label": "Apply ∧-Intro",
+      "rule": "∧-Intro",
+      "explanation": "∧-Introduction says: if you can prove P and you can prove Q, then you can prove P ∧ Q. We need both pieces — that's why conjunction means 'and'. Each premise sits above the inference bar.",
+      "lean_tactic": "exact ⟨hp, hq⟩",
+      "tree": {
+        "conclusion": "P ∧ Q",
+        "rule": "∧-Intro",
+        "premises": [
+          { "conclusion": "P", "label": "premise" },
+          { "conclusion": "Q", "label": "premise" }
+        ]
+      },
+      "qed": true
+    }
+  ]
+}

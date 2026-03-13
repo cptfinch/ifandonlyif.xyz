@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>&or;-Elim: Proof by cases &mdash; if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
+    <link rel="stylesheet" href="../../js/gentzen.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Proof Theory</a> / &or;-Elim</p>
+
+        <h1>&or;-Elim: Proof by cases</h1>
+
+        <h2>The rule</h2>
+
+        <p><strong>If you have P &or; Q, and both P &rarr; R and Q &rarr; R, then R.</strong></p>
+
+        <p>This is the most complex rule so far &mdash; it has three premises. It formalises case analysis: when you know "P or Q" holds, you prove your goal R in each case separately. If R follows from P and R follows from Q, then R follows from P &or; Q regardless of which disjunct is true.</p>
+
+        <h2>Gentzen notation</h2>
+
+<pre>            [P]&sup1;    [Q]&sup2;
+             &vellip;       &vellip;
+ P &or; Q      R       R
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &or;-Elim&sup1;&sdot;&sup2;
+            R</pre>
+
+        <p>The two sub-derivations (from [P] to R and from [Q] to R) represent the two cases. Both assumptions are discharged by the rule.</p>
+
+        <h2>Watch the proof build</h2>
+
+        <div id="disj-elim-stepper"></div>
+
+        <h2>In any prover</h2>
+
+        <table>
+            <tr><th>Prover</th><th>Syntax</th></tr>
+            <tr><td>Lean 4</td><td><code>rcases h with hp | hq</code></td></tr>
+            <tr><td>Coq</td><td><code>destruct H as [HP | HQ]</code></td></tr>
+            <tr><td>Agda</td><td>pattern matching with two clauses</td></tr>
+        </table>
+
+        <p class="track-desc" style="margin-top: 2rem; font-size: 0.9rem;"><strong>See also:</strong> <a href="../strategies/03-case-analysis.html">Strategies &sect;03 &mdash; Case analysis</a></p>
+
+        <h2>Your turn</h2>
+
+        <p>Prove <code>P &or; Q &rarr; Q &or; P</code> (commutativity of disjunction).</p>
+
+        <details class="hint">
+            <summary>Hint</summary>
+            <div class="hint-content">
+                <p>Use &rarr;-Intro to assume P &or; Q, then &or;-Elim to case-split. In the P case, use &or;-Intro&sub2; to get Q &or; P. In the Q case, use &or;-Intro&sub1;.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre>                   [P]&sup1;           [Q]&sup2;
+              &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &or;-Intro&sub2;  &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &or;-Intro&sub1;
+ [P &or; Q]&sup3;    Q &or; P          Q &or; P
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &or;-Elim&sup1;&sdot;&sup2;
+              Q &or; P
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &rarr;-Intro&sup3;
+           P &or; Q &rarr; Q &or; P</pre>
+                <p>In the P case you inject right (&or;-Intro&sub2;); in the Q case you inject left (&or;-Intro&sub1;). Both cases yield Q &or; P.</p>
+            </div>
+        </details>
+
+        <div class="exercise-nav">
+            <a href="06-disjunction-intro.html">&larr; &or;-Intro</a>
+            <a href="08-negation-intro.html">&not;-Intro &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+    <script src="../../js/gentzen.js"></script>
+    <script>
+    fetch('../../js/proofs/proof-theory-07-disjunction-elim.json')
+      .then(r => r.json())
+      .then(data => GentzenTree.mountStepper('disj-elim-stepper', data));
+    </script>
+</body>
+</html>

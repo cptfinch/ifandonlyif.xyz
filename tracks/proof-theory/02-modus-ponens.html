@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>&rarr;-Elim: Modus ponens &mdash; if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
+    <link rel="stylesheet" href="../../js/gentzen.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Proof Theory</a> / &rarr;-Elim</p>
+
+        <h1>&rarr;-Elim: Modus ponens</h1>
+
+        <h2>The rule</h2>
+
+        <p><strong>If you have P and P &rarr; Q, conclude Q.</strong></p>
+
+        <p>This is the oldest rule in logic &mdash; Aristotle knew it. Modus ponens ("the way of affirming") lets you apply an implication to its antecedent to obtain the consequent. It is the elimination rule for implication: you <em>use</em> an implication you already have.</p>
+
+        <h2>Gentzen notation</h2>
+
+<pre> P    P &rarr; Q
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &rarr;-Elim
+      Q</pre>
+
+        <p>Two premises sit above the bar: the proposition P and the implication P &rarr; Q. Below the bar, the conclusion Q is obtained.</p>
+
+        <h2>Watch the proof build</h2>
+
+        <div id="modus-ponens-stepper"></div>
+
+        <h2>In any prover</h2>
+
+        <table>
+            <tr><th>Prover</th><th>Syntax</th></tr>
+            <tr><td>Lean 4</td><td><code>exact h hp</code> or <code>apply h</code></td></tr>
+            <tr><td>Coq</td><td><code>apply H</code></td></tr>
+            <tr><td>Agda</td><td><code>h hp</code></td></tr>
+        </table>
+
+        <h2>Your turn</h2>
+
+        <p>Given <code>P &rarr; Q</code>, <code>Q &rarr; R</code>, and <code>P</code>, construct the Gentzen tree for <code>R</code>.</p>
+
+        <details class="hint">
+            <summary>Hint</summary>
+            <div class="hint-content">
+                <p>Use &rarr;-Elim twice. First apply P &rarr; Q to P to get Q. Then apply Q &rarr; R to Q to get R.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre>             P &rarr; Q    Q &rarr; R
+ P    P &rarr; Q           |
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &rarr;-Elim    |
+      Q        Q &rarr; R
+     &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &rarr;-Elim
+           R</pre>
+                <p>The tree applies &rarr;-Elim twice: once to get Q from P and P &rarr; Q, and once to get R from Q and Q &rarr; R.</p>
+            </div>
+        </details>
+
+        <div class="exercise-nav">
+            <a href="01-implication-intro.html">&larr; &rarr;-Intro</a>
+            <a href="03-hypothetical-syllogism.html">Hypothetical syllogism &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+    <script src="../../js/gentzen.js"></script>
+    <script>
+    fetch('../../js/proofs/proof-theory-02-modus-ponens.json')
+      .then(r => r.json())
+      .then(data => GentzenTree.mountStepper('modus-ponens-stepper', data));
+    </script>
+</body>
+</html>

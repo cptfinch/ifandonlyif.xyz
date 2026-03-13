@@ -1,0 +1,60 @@
+{
+  "theorem": "P ∧ Q ⊢ Q ∧ P",
+  "notation": "gentzen",
+  "steps": [
+    {
+      "label": "What we want to prove",
+      "rule": null,
+      "explanation": "Given P ∧ Q, prove Q ∧ P. Conjunction is commutative — 'P and Q' is the same as 'Q and P'. To prove this formally, we need to take the conjunction apart and reassemble it in the other order.",
+      "tree": {
+        "conclusion": "Q ∧ P",
+        "rule": "?",
+        "premises": [{ "conclusion": "?", "label": "?" }]
+      }
+    },
+    {
+      "label": "Extract P from P ∧ Q",
+      "rule": "∧-Elim₂",
+      "explanation": "∧-Elimination₂ (also called ∧-Elim-right or projection) extracts the second component. From P ∧ Q we get P — wait, that's the first component. Let's think: ∧-Elim₁ gives the left, ∧-Elim₂ gives the right. We need both.",
+      "tree": {
+        "conclusion": "Q ∧ P",
+        "rule": "?",
+        "premises": [
+          {
+            "conclusion": "Q",
+            "rule": "∧-Elim₂",
+            "premises": [{ "conclusion": "P ∧ Q", "label": "premise" }]
+          },
+          {
+            "conclusion": "P",
+            "rule": "?",
+            "premises": [{ "conclusion": "?", "label": "?" }]
+          }
+        ]
+      }
+    },
+    {
+      "label": "Extract Q from P ∧ Q, then reassemble",
+      "rule": "∧-Intro",
+      "explanation": "∧-Elim₁ extracts P (the left component), ∧-Elim₂ extracts Q (the right component). Then ∧-Intro reassembles them in the new order: Q first, P second.",
+      "lean_tactic": "exact ⟨h.2, h.1⟩",
+      "tree": {
+        "conclusion": "Q ∧ P",
+        "rule": "∧-Intro",
+        "premises": [
+          {
+            "conclusion": "Q",
+            "rule": "∧-Elim₂",
+            "premises": [{ "conclusion": "P ∧ Q", "label": "premise" }]
+          },
+          {
+            "conclusion": "P",
+            "rule": "∧-Elim₁",
+            "premises": [{ "conclusion": "P ∧ Q", "label": "premise" }]
+          }
+        ]
+      },
+      "qed": true
+    }
+  ]
+}

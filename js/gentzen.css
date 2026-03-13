@@ -1,0 +1,228 @@
+/* Gentzen Tree Renderer */
+
+.gentzen-container {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg-raised);
+    overflow: hidden;
+    margin: 2rem 0;
+}
+
+.gentzen-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    background: var(--code-bg);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.gentzen-title {
+    color: var(--accent);
+}
+
+.gentzen-counter {
+    color: var(--text-muted);
+}
+
+/* Tree area */
+.gentzen-tree-area {
+    padding: 2rem 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    min-height: 200px;
+    overflow-x: auto;
+}
+
+/* Inference node */
+.gentzen-inference {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity 0.3s ease;
+}
+
+.gentzen-inference.highlight {
+    background: rgba(126, 184, 218, 0.06);
+    border-radius: 8px;
+}
+
+/* Premises row */
+.gentzen-premises {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0;
+}
+
+.gentzen-premise-spacer {
+    width: 2rem;
+    flex-shrink: 0;
+}
+
+/* Horizontal inference bar */
+.gentzen-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    margin: 0.25rem 0;
+}
+
+.gentzen-bar {
+    flex: 1;
+    height: 2px;
+    background: var(--text);
+    min-width: 3rem;
+}
+
+.gentzen-rule {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    transition: background 0.2s;
+}
+
+.gentzen-rule:hover {
+    background: rgba(126, 184, 218, 0.12);
+}
+
+.gentzen-discharge-mark {
+    font-size: 0.6rem;
+    color: #c9a0dc;
+    margin-left: 1px;
+}
+
+/* Conclusion (below the bar) */
+.gentzen-conclusion {
+    padding: 0.25rem 0.5rem;
+    text-align: center;
+}
+
+/* Leaf node */
+.gentzen-leaf {
+    padding: 0.25rem 0.5rem;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.gentzen-label {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+}
+
+/* Formula text */
+.gentzen-formula {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: var(--text);
+}
+
+.gentzen-formula .sym {
+    color: var(--accent);
+    padding: 0 0.1em;
+}
+
+/* Assumption brackets [P]^n */
+.gentzen-assumption-bracket {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: #c9a0dc;
+}
+
+/* Info panel */
+.gentzen-info-panel {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--border);
+    min-height: 3.5rem;
+}
+
+.gentzen-rule-display {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    color: #c9a0dc;
+    margin-bottom: 0.25rem;
+}
+
+.gentzen-rule-tag {
+    background: rgba(201, 160, 220, 0.15);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.gentzen-step-label {
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.gentzen-explanation {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+/* Lean tactic mapping */
+.gentzen-lean-mapping {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--border);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.gentzen-lean-mapping .mapping-label {
+    font-family: var(--mono);
+    color: var(--accent-dim);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.gentzen-lean-mapping code {
+    font-family: var(--mono);
+    color: #c9a0dc;
+    background: var(--code-bg);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.85rem;
+}
+
+/* Animation for tree building */
+.gentzen-inference {
+    animation: gentzen-appear 0.4s ease;
+}
+
+@keyframes gentzen-appear {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .gentzen-tree-area {
+        padding: 1.5rem 1rem;
+        min-height: 150px;
+    }
+    .gentzen-formula {
+        font-size: 0.95rem;
+    }
+    .gentzen-premise-spacer {
+        width: 1rem;
+    }
+}

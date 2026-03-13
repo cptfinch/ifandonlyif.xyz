@@ -1,5 +1,6 @@
 {
   "theorem": "or_symm (P Q : Prop) (h : P ∨ Q) : Q ∨ P",
+  "gentzen": { "rule": "∨-Elim", "also_known_as": "Proof by cases", "see_also": "tracks/proof-theory/07-disjunction-elim.html" },
   "steps": [
     {
       "label": "Initial proof state",

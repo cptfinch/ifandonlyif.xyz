@@ -1,0 +1,70 @@
+{
+  "theorem": "P ∨ Q, P → R, Q → R ⊢ R",
+  "notation": "gentzen",
+  "steps": [
+    {
+      "label": "What we want to prove",
+      "rule": null,
+      "explanation": "Given P ∨ Q and proofs that both P → R and Q → R, prove R. If we know one of P or Q holds, and both lead to R, then R must hold. This is proof by cases.",
+      "tree": {
+        "conclusion": "R",
+        "rule": "?",
+        "premises": [{ "conclusion": "?", "label": "?" }]
+      }
+    },
+    {
+      "label": "Set up ∨-Elim (case split)",
+      "rule": "∨-Elim",
+      "explanation": "∨-Elimination requires three things: the disjunction P ∨ Q, a proof that P leads to R, and a proof that Q leads to R. We handle each case separately — if P holds, we get R one way; if Q holds, we get R another way.",
+      "tree": {
+        "conclusion": "R",
+        "rule": "∨-Elim",
+        "premises": [
+          { "conclusion": "P ∨ Q", "label": "premise" },
+          {
+            "conclusion": "R",
+            "rule": "?",
+            "explanation": "Case 1: assume P, derive R",
+            "premises": [{ "conclusion": "P", "assumption": true, "discharged": "1" }]
+          },
+          {
+            "conclusion": "R",
+            "rule": "?",
+            "explanation": "Case 2: assume Q, derive R",
+            "premises": [{ "conclusion": "Q", "assumption": true, "discharged": "2" }]
+          }
+        ]
+      }
+    },
+    {
+      "label": "Complete both cases with →-Elim",
+      "rule": "→-Elim",
+      "explanation": "In Case 1, we have P and P → R, so →-Elim gives R. In Case 2, we have Q and Q → R, so →-Elim gives R. Both branches reach R, so the proof is complete.",
+      "lean_tactic": "rcases h with hp | hq",
+      "tree": {
+        "conclusion": "R",
+        "rule": "∨-Elim",
+        "premises": [
+          { "conclusion": "P ∨ Q", "label": "premise" },
+          {
+            "conclusion": "R",
+            "rule": "→-Elim",
+            "premises": [
+              { "conclusion": "P", "assumption": true, "discharged": "1" },
+              { "conclusion": "P → R", "label": "premise" }
+            ]
+          },
+          {
+            "conclusion": "R",
+            "rule": "→-Elim",
+            "premises": [
+              { "conclusion": "Q", "assumption": true, "discharged": "2" },
+              { "conclusion": "Q → R", "label": "premise" }
+            ]
+          }
+        ]
+      },
+      "qed": true
+    }
+  ]
+}

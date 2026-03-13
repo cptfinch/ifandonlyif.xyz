@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>&and;-Elim: Taking a conjunction apart &mdash; if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
+    <link rel="stylesheet" href="../../js/gentzen.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Proof Theory</a> / &and;-Elim</p>
+
+        <h1>&and;-Elim: Taking a conjunction apart</h1>
+
+        <h2>The rules</h2>
+
+        <p><strong>From P &and; Q, you can extract P (project left) or Q (project right).</strong></p>
+
+        <p>There are two elimination rules for conjunction &mdash; one for each component. They are the inverse of &and;-Intro: where introduction builds a pair, elimination takes it apart.</p>
+
+        <h2>Gentzen notation</h2>
+
+<pre> P &and; Q              P &and; Q
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &and;-Elim&sub1;     &mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &and;-Elim&sub2;
+   P                  Q</pre>
+
+        <h2>Watch the proof build</h2>
+
+        <div id="conj-elim-stepper"></div>
+
+        <h2>In any prover</h2>
+
+        <table>
+            <tr><th>Prover</th><th>Syntax</th></tr>
+            <tr><td>Lean 4</td><td><code>exact h.1</code> / <code>exact h.2</code></td></tr>
+            <tr><td>Coq</td><td><code>destruct H as [HP HQ]</code></td></tr>
+            <tr><td>Agda</td><td><code>proj&sub1; h</code> / <code>proj&sub2; h</code></td></tr>
+        </table>
+
+        <h2>Your turn</h2>
+
+        <p>Prove <code>(P &and; Q) &and; R &rarr; P &and; (Q &and; R)</code>. You will need both &and;-Intro and &and;-Elim.</p>
+
+        <details class="hint">
+            <summary>Hint</summary>
+            <div class="hint-content">
+                <p>Start with &rarr;-Intro to assume (P &and; Q) &and; R. Then use &and;-Elim to extract P &and; Q and R. From P &and; Q, extract P and Q individually. Finally, rebuild as P &and; (Q &and; R) using two &and;-Intro applications.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre>               [(P &and; Q) &and; R]&sup1;
+               &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &and;-Elim&sub1;
+ [(P&and;Q)&and;R]&sup1;      P &and; Q           [(P&and;Q)&and;R]&sup1;
+ &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &and;-Elim&sub1;  &mdash;&mdash;&mdash;&mdash;&mdash; &and;-Elim&sub2;  &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &and;-Elim&sub2;
+   P &and; Q          Q               R
+  &mdash;&mdash;&mdash;&mdash;&mdash; &and;-Elim&sub1;  &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &and;-Intro
+     P              Q &and; R
+    &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &and;-Intro
+         P &and; (Q &and; R)
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &rarr;-Intro&sup1;
+   (P &and; Q) &and; R &rarr; P &and; (Q &and; R)</pre>
+            </div>
+        </details>
+
+        <div class="exercise-nav">
+            <a href="04-conjunction-intro.html">&larr; &and;-Intro</a>
+            <a href="06-disjunction-intro.html">&or;-Intro &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+    <script src="../../js/gentzen.js"></script>
+    <script>
+    fetch('../../js/proofs/proof-theory-05-conjunction-elim.json')
+      .then(r => r.json())
+      .then(data => GentzenTree.mountStepper('conj-elim-stepper', data));
+    </script>
+</body>
+</html>

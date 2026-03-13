@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>&perp;-Elim: Ex falso quodlibet &mdash; if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
+    <link rel="stylesheet" href="../../js/gentzen.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Proof Theory</a> / &perp;-Elim</p>
+
+        <h1>&perp;-Elim: Ex falso quodlibet</h1>
+
+        <h2>The rule</h2>
+
+        <p><strong>From &perp; (absurdity), derive anything.</strong></p>
+
+        <p><em>Ex falso quodlibet</em> &mdash; "from falsehood, anything follows." If you have a proof of &perp;, you can conclude any proposition P whatsoever. This rule has no restrictions on what P can be: once you have a contradiction, every statement becomes provable.</p>
+
+        <h2>Gentzen notation</h2>
+
+<pre>  &perp;
+&mdash;&mdash;&mdash;&mdash;&mdash; &perp;-Elim
+  P</pre>
+
+        <p>Note that &perp; has no introduction rule &mdash; there is no direct way to prove absurdity. You can only derive &perp; by applying &not;P to P (i.e., using the fact that &not;P is P &rarr; &perp;).</p>
+
+        <h2>Watch the proof build</h2>
+
+        <div id="ex-falso-stepper"></div>
+
+        <h2>In any prover</h2>
+
+        <table>
+            <tr><th>Prover</th><th>Syntax</th></tr>
+            <tr><td>Lean 4</td><td><code>exact absurd hp hnp</code> or <code>contradiction</code></td></tr>
+            <tr><td>Coq</td><td><code>contradiction</code> or <code>exfalso</code></td></tr>
+            <tr><td>Agda</td><td><code>&perp;-elim</code></td></tr>
+        </table>
+
+        <h2>Historical note</h2>
+
+        <p>The principle of explosion is a defining feature of classical and intuitionistic logic. <em>Paraconsistent</em> logics reject this rule, allowing contradictions to exist without everything becoming provable. In standard mathematics, however, ex falso is universally accepted and plays a crucial role in proofs by contradiction.</p>
+
+        <h2>Your turn</h2>
+
+        <p>Prove <code>&perp; &rarr; P &and; Q</code>. You will need &perp;-Elim and what else?</p>
+
+        <details class="hint">
+            <summary>Hint</summary>
+            <div class="hint-content">
+                <p>Start with &rarr;-Intro to assume &perp;. To build P &and; Q you need &and;-Intro, which requires proofs of both P and Q. Use &perp;-Elim twice &mdash; once to get P and once to get Q.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre>  [&perp;]&sup1;          [&perp;]&sup1;
+&mdash;&mdash;&mdash;&mdash;&mdash; &perp;-Elim  &mdash;&mdash;&mdash;&mdash;&mdash; &perp;-Elim
+   P             Q
+  &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &and;-Intro
+      P &and; Q
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &rarr;-Intro&sup1;
+   &perp; &rarr; P &and; Q</pre>
+                <p>You need &perp;-Elim (twice, to produce P and Q from &perp;) and &and;-Intro (to combine them), plus &rarr;-Intro to close the assumption.</p>
+            </div>
+        </details>
+
+        <div class="exercise-nav">
+            <a href="08-negation-intro.html">&larr; &not;-Intro</a>
+            <a href="index.html">Proof Theory &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+    <script src="../../js/gentzen.js"></script>
+    <script>
+    fetch('../../js/proofs/proof-theory-09-ex-falso.json')
+      .then(r => r.json())
+      .then(data => GentzenTree.mountStepper('ex-falso-stepper', data));
+    </script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 {
   "theorem": "and_intro (P Q : Prop) (hp : P) (hq : Q) : P ∧ Q",
+  "gentzen": { "rule": "∧-Intro", "see_also": "tracks/proof-theory/04-conjunction-intro.html" },
   "steps": [
     {
       "label": "Initial proof state",

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>&and;-Intro: Proving a conjunction &mdash; if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
+    <link rel="stylesheet" href="../../js/gentzen.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Proof Theory</a> / &and;-Intro</p>
+
+        <h1>&and;-Intro: Proving a conjunction</h1>
+
+        <h2>The rule</h2>
+
+        <p><strong>To prove P &and; Q, prove P and prove Q separately.</strong></p>
+
+        <p>Conjunction introduction requires two premises &mdash; one for each conjunct. You must supply independent proofs of both P and Q. The two sub-proofs sit side by side above the horizontal bar.</p>
+
+        <h2>Gentzen notation</h2>
+
+<pre>  P       Q
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &and;-Intro
+   P &and; Q</pre>
+
+        <h2>Watch the proof build</h2>
+
+        <div id="conj-intro-stepper"></div>
+
+        <h2>In any prover</h2>
+
+        <table>
+            <tr><th>Prover</th><th>Syntax</th></tr>
+            <tr><td>Lean 4</td><td><code>constructor</code> or <code>exact &langle;hp, hq&rangle;</code></td></tr>
+            <tr><td>Coq</td><td><code>split</code></td></tr>
+            <tr><td>Agda</td><td><code>hp , hq</code></td></tr>
+        </table>
+
+        <h2>Your turn</h2>
+
+        <p>Prove <code>P &and; (Q &and; R)</code> from assumptions P, Q, R. How many &and;-Intro rules do you need?</p>
+
+        <details class="hint">
+            <summary>Hint</summary>
+            <div class="hint-content">
+                <p>You need to build Q &and; R first (one &and;-Intro), then combine P with Q &and; R (another &and;-Intro).</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre>          Q       R
+         &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &and;-Intro
+  P       Q &and; R
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &and;-Intro
+  P &and; (Q &and; R)</pre>
+                <p>You need two &and;-Intro rules: one to build Q &and; R, and one to build P &and; (Q &and; R).</p>
+            </div>
+        </details>
+
+        <div class="exercise-nav">
+            <a href="03-hypothetical-syllogism.html">&larr; Hypothetical syllogism</a>
+            <a href="05-conjunction-elim.html">&and;-Elim &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+    <script src="../../js/gentzen.js"></script>
+    <script>
+    fetch('../../js/proofs/proof-theory-04-conjunction-intro.json')
+      .then(r => r.json())
+      .then(data => GentzenTree.mountStepper('conj-intro-stepper', data));
+    </script>
+</body>
+</html>

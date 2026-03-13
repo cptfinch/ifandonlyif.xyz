@@ -1,0 +1,30 @@
+{
+  "theorem": "⊥ ⊢ P",
+  "notation": "gentzen",
+  "steps": [
+    {
+      "label": "What we want to prove",
+      "rule": null,
+      "explanation": "From falsehood (⊥), prove anything (P). This is 'ex falso quodlibet' — from absurdity, anything follows. If your assumptions are contradictory, you can prove literally anything.",
+      "tree": {
+        "conclusion": "P",
+        "rule": "?",
+        "premises": [{ "conclusion": "?", "label": "?" }]
+      }
+    },
+    {
+      "label": "Apply ⊥-Elim (Ex Falso)",
+      "rule": "⊥-Elim",
+      "explanation": "⊥-Elimination says: from ⊥, derive any proposition P. This is a foundational rule — it's why contradictions are so dangerous in logic. One contradiction and everything collapses. In Latin: ex falso quodlibet.",
+      "lean_tactic": "exact absurd ‹something› ‹its negation›",
+      "tree": {
+        "conclusion": "P",
+        "rule": "⊥-Elim",
+        "premises": [
+          { "conclusion": "⊥", "label": "premise" }
+        ]
+      },
+      "qed": true
+    }
+  ]
+}

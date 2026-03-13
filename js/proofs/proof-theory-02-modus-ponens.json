@@ -1,0 +1,44 @@
+{
+  "theorem": "P, P → Q ⊢ Q",
+  "notation": "gentzen",
+  "steps": [
+    {
+      "label": "What we want to prove",
+      "rule": null,
+      "explanation": "Given P and P → Q, prove Q. This is modus ponens — the most fundamental rule of logic. It has been known since antiquity.",
+      "tree": {
+        "conclusion": "Q",
+        "rule": "?",
+        "premises": [{ "conclusion": "?", "label": "?" }]
+      }
+    },
+    {
+      "label": "State our premises",
+      "rule": null,
+      "explanation": "We have two premises: P (a fact) and P → Q (an implication). These are the leaves of our proof tree.",
+      "tree": {
+        "conclusion": "Q",
+        "rule": "?",
+        "premises": [
+          { "conclusion": "P", "label": "premise" },
+          { "conclusion": "P → Q", "label": "premise" }
+        ]
+      }
+    },
+    {
+      "label": "Apply →-Elim (Modus Ponens)",
+      "rule": "→-Elim",
+      "explanation": "→-Elimination says: if you have P and P → Q, you can conclude Q. The implication 'fires' — we feed P into P → Q and get Q out. This is also called modus ponens.",
+      "lean_tactic": "exact hpq hp",
+      "tree": {
+        "conclusion": "Q",
+        "rule": "→-Elim",
+        "premises": [
+          { "conclusion": "P", "label": "premise" },
+          { "conclusion": "P → Q", "label": "premise" }
+        ]
+      },
+      "qed": true
+    }
+  ]
+}

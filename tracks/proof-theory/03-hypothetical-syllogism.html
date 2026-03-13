@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypothetical syllogism &mdash; if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../js/stepper.css">
+    <link rel="stylesheet" href="../../js/gentzen.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="../../roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <a href="index.html">Proof Theory</a> / Hypothetical syllogism</p>
+
+        <h1>Hypothetical syllogism</h1>
+
+        <h2>The idea</h2>
+
+        <p><strong>Chain implications: if P &rarr; Q and Q &rarr; R, then P &rarr; R.</strong></p>
+
+        <p>This is transitivity of implication. It combines &rarr;-Intro and &rarr;-Elim in a single proof, making it the first multi-rule derivation in this track. You assume P (via &rarr;-Intro), apply P &rarr; Q to get Q (via &rarr;-Elim), then apply Q &rarr; R to get R (via &rarr;-Elim again).</p>
+
+        <h2>How the tree grows</h2>
+
+        <p>Watch how the proof tree is built step by step. First we open the assumption, then we chain two eliminations, and finally the introduction rule closes the assumption.</p>
+
+<pre>        [P]&sup1;    P &rarr; Q
+        &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &rarr;-Elim
+            Q       Q &rarr; R
+           &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &rarr;-Elim
+                 R
+        &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &rarr;-Intro&sup1;
+              P &rarr; R</pre>
+
+        <h2>Watch the proof build</h2>
+
+        <div id="hyp-syl-stepper"></div>
+
+        <h2>In any prover</h2>
+
+        <table>
+            <tr><th>Prover</th><th>Syntax</th></tr>
+            <tr><td>Lean 4</td><td><code>intro hp; exact hqr (hpq hp)</code></td></tr>
+            <tr><td>Coq</td><td><code>intro HP; apply HQR; apply HPQ; exact HP</code></td></tr>
+            <tr><td>Agda</td><td><code>&lambda; hp &rarr; hqr (hpq hp)</code></td></tr>
+        </table>
+
+        <h2>Your turn</h2>
+
+        <p>Extend to four: given <code>P &rarr; Q</code>, <code>Q &rarr; R</code>, <code>R &rarr; S</code>, construct the Gentzen tree for <code>P &rarr; S</code>.</p>
+
+        <details class="hint">
+            <summary>Hint</summary>
+            <div class="hint-content">
+                <p>The structure is the same &mdash; you just chain one more &rarr;-Elim. Assume P, apply P &rarr; Q, then Q &rarr; R, then R &rarr; S.</p>
+            </div>
+        </details>
+
+        <details class="hint">
+            <summary>Solution</summary>
+            <div class="hint-content">
+<pre>  [P]&sup1;  P &rarr; Q
+  &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &rarr;-Elim
+      Q    Q &rarr; R
+     &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &rarr;-Elim
+          R    R &rarr; S
+         &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &rarr;-Elim
+              S
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &rarr;-Intro&sup1;
+           P &rarr; S</pre>
+                <p>Three &rarr;-Elim applications chained inside one &rarr;-Intro.</p>
+            </div>
+        </details>
+
+        <div class="exercise-nav">
+            <a href="02-modus-ponens.html">&larr; Modus ponens</a>
+            <a href="04-conjunction-intro.html">&and;-Intro &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+    <script src="../../js/gentzen.js"></script>
+    <script>
+    fetch('../../js/proofs/proof-theory-03-hypothetical-syllogism.json')
+      .then(r => r.json())
+      .then(data => GentzenTree.mountStepper('hyp-syl-stepper', data));
+    </script>
+</body>
+</html>

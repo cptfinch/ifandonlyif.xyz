@@ -1,0 +1,38 @@
+{
+  "theorem": "(P → ⊥) ⊢ ¬P",
+  "notation": "gentzen",
+  "steps": [
+    {
+      "label": "What we want to prove",
+      "rule": null,
+      "explanation": "Negation in natural deduction is defined as: ¬P means P → ⊥ (P implies absurdity). To prove ¬P, you assume P and derive a contradiction (⊥). This is proof by contradiction — or more precisely, negation introduction.",
+      "tree": {
+        "conclusion": "¬P",
+        "rule": "?",
+        "premises": [{ "conclusion": "?", "label": "?" }]
+      }
+    },
+    {
+      "label": "Assume P, derive ⊥",
+      "rule": "¬-Intro",
+      "explanation": "¬-Introduction says: if assuming P leads to absurdity (⊥), then ¬P. We assume P (bracketed, to be discharged), combine it with our premise P → ⊥ using →-Elim to get ⊥, and then discharge the assumption.",
+      "lean_tactic": "intro h",
+      "tree": {
+        "conclusion": "¬P",
+        "rule": "¬-Intro",
+        "discharged": "1",
+        "premises": [
+          {
+            "conclusion": "⊥",
+            "rule": "→-Elim",
+            "premises": [
+              { "conclusion": "P", "assumption": true, "discharged": "1" },
+              { "conclusion": "P → ⊥", "label": "premise" }
+            ]
+          }
+        ]
+      },
+      "qed": true
+    }
+  ]
+}

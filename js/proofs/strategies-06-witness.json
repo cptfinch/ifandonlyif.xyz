@@ -1,5 +1,6 @@
 {
   "theorem": "exists_even : ∃ n : Nat, n % 2 = 0",
+  "gentzen": { "rule": "∃-Intro", "also_known_as": "Existential introduction" },
   "steps": [
     {
       "label": "Initial proof state",
