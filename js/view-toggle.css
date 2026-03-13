@@ -1,0 +1,77 @@
+/* View Toggle — Tactic / Tree switch */
+
+.view-toggle-container {
+    margin: 2rem 0;
+}
+
+.view-toggle-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 0;
+}
+
+.view-toggle-btn {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+}
+
+.view-toggle-btn:first-child {
+    border-radius: 6px 0 0 0;
+    border-right: none;
+}
+
+.view-toggle-btn:nth-child(2) {
+    border-radius: 0 6px 0 0;
+}
+
+.view-toggle-btn:hover {
+    color: var(--text);
+    background: var(--bg-raised);
+}
+
+.view-toggle-btn.view-toggle-active {
+    background: var(--bg-raised);
+    color: var(--accent);
+    border-bottom-color: var(--bg-raised);
+    font-weight: 500;
+}
+
+.view-toggle-rule {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent-dim);
+    padding: 0.5rem 1rem;
+    letter-spacing: 0.03em;
+}
+
+/* Views */
+.view-toggle-view {
+    display: none;
+}
+
+.view-toggle-view.view-toggle-visible {
+    display: block;
+    animation: view-fade-in 0.3s ease;
+}
+
+@keyframes view-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Remove top border radius from stepper/gentzen inside toggle */
+.view-toggle-view .proof-stepper,
+.view-toggle-view .gentzen-container {
+    border-radius: 0 0 10px 10px;
+    margin: 0;
+    border-top: none;
+}

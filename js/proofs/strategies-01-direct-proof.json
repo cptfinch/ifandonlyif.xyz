@@ -5,6 +5,18 @@
     "also_known_as": "Modus ponens",
     "see_also": "tracks/proof-theory/02-modus-ponens.html"
   },
+  "gentzen_tree": {
+    "theorem": "P, P → Q ⊢ Q",
+    "tree": {
+      "conclusion": "Q",
+      "rule": "→-Elim",
+      "premises": [
+        { "conclusion": "P", "label": "hp" },
+        { "conclusion": "P → Q", "label": "hpq" }
+      ]
+    },
+    "explanation": "The Lean tactic 'exact hpq hp' is →-Elimination: apply the implication P → Q to the proof of P to get Q."
+  },
   "steps": [
     {
       "label": "Initial proof state",

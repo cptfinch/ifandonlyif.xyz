@@ -1,6 +1,18 @@
 {
   "theorem": "and_intro (P Q : Prop) (hp : P) (hq : Q) : P ∧ Q",
   "gentzen": { "rule": "∧-Intro", "see_also": "tracks/proof-theory/04-conjunction-intro.html" },
+  "gentzen_tree": {
+    "theorem": "P, Q ⊢ P ∧ Q",
+    "tree": {
+      "conclusion": "P ∧ Q",
+      "rule": "∧-Intro",
+      "premises": [
+        { "conclusion": "P", "label": "hp" },
+        { "conclusion": "Q", "label": "hq" }
+      ]
+    },
+    "explanation": "The 'constructor' tactic followed by 'exact hp' and 'exact hq' is ∧-Introduction: from P and Q, conclude P ∧ Q."
+  },
   "steps": [
     {
       "label": "Initial proof state",

@@ -1,6 +1,25 @@
 {
   "theorem": "not_not_intro (P : Prop) (hp : P) : ¬¬P",
   "gentzen": { "rule": "¬-Intro", "also_known_as": "Negation introduction", "see_also": "tracks/proof-theory/08-negation-intro.html" },
+  "gentzen_tree": {
+    "theorem": "P ⊢ ¬¬P",
+    "tree": {
+      "conclusion": "¬¬P",
+      "rule": "¬-Intro",
+      "discharged": "1",
+      "premises": [
+        {
+          "conclusion": "⊥",
+          "rule": "→-Elim",
+          "premises": [
+            { "conclusion": "P", "label": "hp" },
+            { "conclusion": "¬P", "assumption": true, "discharged": "1" }
+          ]
+        }
+      ]
+    },
+    "explanation": "'intro hnp' is ¬-Introduction: assume ¬P and derive ⊥. Then 'exact hnp hp' applies the assumed ¬P to hp : P, producing the contradiction."
+  },
   "steps": [
     {
       "label": "Initial proof state",

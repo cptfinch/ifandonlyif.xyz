@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../style.css">
     <link rel="stylesheet" href="../../js/stepper.css">
+    <link rel="stylesheet" href="../../js/gentzen.css">
+    <link rel="stylesheet" href="../../js/view-toggle.css">
     <link rel="stylesheet" href="../../js/progress.css">
 </head>
 <body>
@@ -88,10 +90,12 @@ Think:       "I need to prove both halves."</pre>
         <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
     </footer>
     <script src="../../js/stepper.js"></script>
+    <script src="../../js/gentzen.js"></script>
+    <script src="../../js/view-toggle.js"></script>
     <script>
     fetch('../../js/proofs/strategies-02-split-the-goal.json')
       .then(r => r.json())
-      .then(data => ProofStepper.mount('split-goal-stepper', data));
+      .then(data => ViewToggle.mount('split-goal-stepper', data));
     </script>
     <script src="../../js/progress.js"></script>
 </body>

@@ -1,6 +1,31 @@
 {
   "theorem": "or_symm (P Q : Prop) (h : P ∨ Q) : Q ∨ P",
   "gentzen": { "rule": "∨-Elim", "also_known_as": "Proof by cases", "see_also": "tracks/proof-theory/07-disjunction-elim.html" },
+  "gentzen_tree": {
+    "theorem": "P ∨ Q ⊢ Q ∨ P",
+    "tree": {
+      "conclusion": "Q ∨ P",
+      "rule": "∨-Elim",
+      "premises": [
+        { "conclusion": "P ∨ Q", "label": "h" },
+        {
+          "conclusion": "Q ∨ P",
+          "rule": "∨-Intro₂",
+          "premises": [
+            { "conclusion": "P", "assumption": true, "discharged": "1" }
+          ]
+        },
+        {
+          "conclusion": "Q ∨ P",
+          "rule": "∨-Intro₁",
+          "premises": [
+            { "conclusion": "Q", "assumption": true, "discharged": "2" }
+          ]
+        }
+      ]
+    },
+    "explanation": "'rcases h with hp | hq' is ∨-Elimination: case split on P ∨ Q. In case 1 (P), use ∨-Intro₂. In case 2 (Q), use ∨-Intro₁."
+  },
   "steps": [
     {
       "label": "Initial proof state",
