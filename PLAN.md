@@ -407,6 +407,81 @@ tracks/
 This is the "How to Prove It" track — it cross-references exercises from the
 topic tracks but focuses on the meta-skill of proof construction.
 
+**Status: BUILT** — 8 exercises live at tracks/strategies/
+
+---
+
+## Proof Theory Track — Natural Deduction & Sequent Calculus
+
+### The idea
+
+The strategies track teaches proof techniques in Lean 4 tactic mode. But these
+techniques map directly to the inference rules of **natural deduction** — the
+formal proof system developed by Gentzen in 1935 that underpins all modern
+theorem provers.
+
+A "Proof Theory" track would teach these universal rules using Gentzen-style
+notation (horizontal bars, premises above, conclusions below), then show how
+each rule corresponds to a Lean tactic.
+
+### Natural deduction rules → Lean tactics
+
+| Rule | Gentzen notation | Lean tactic |
+|------|-----------------|-------------|
+| →-Intro | Assume P... derive Q / P → Q | `intro h` |
+| →-Elim (Modus Ponens) | P, P → Q / Q | `exact h hp` or `apply h` |
+| ∧-Intro | P, Q / P ∧ Q | `constructor` or `exact ⟨hp, hq⟩` |
+| ∧-Elim₁ | P ∧ Q / P | `exact h.1` or `obtain ⟨hp, _⟩ := h` |
+| ∧-Elim₂ | P ∧ Q / Q | `exact h.2` or `obtain ⟨_, hq⟩ := h` |
+| ∨-Intro₁ | P / P ∨ Q | `exact Or.inl hp` |
+| ∨-Intro₂ | Q / P ∨ Q | `exact Or.inr hq` |
+| ∨-Elim | P ∨ Q, P→R, Q→R / R | `rcases h with hp \| hq` |
+| ¬-Intro | Assume P... derive ⊥ / ¬P | `intro h` (since ¬P = P → False) |
+| ⊥-Elim (Ex Falso) | ⊥ / P | `exact absurd ...` or `contradiction` |
+| ∀-Intro | For arbitrary x... P(x) / ∀x, P(x) | `intro x` |
+| ∀-Elim | ∀x, P(x) / P(t) | `exact h t` or `specialize h t` |
+| ∃-Intro | P(t) / ∃x, P(x) | `use t` |
+| ∃-Elim | ∃x, P(x) / ... | `obtain ⟨x, hx⟩ := h` |
+
+### Stepper enhancement: proof tree view
+
+Currently our stepper shows a linear sequence of tactic steps. We could add an
+alternative **tree view** that renders the proof as a Gentzen-style natural
+deduction tree:
+
+```
+                    [hp : P]¹    hpq : P → Q
+                    ————————————————————————— →-Elim
+           hq : Q           hqr : Q → R
+           ————————————————————————————— →-Elim
+                        R
+                   ————————— →-Intro¹
+                    P → R
+```
+
+This would be a second rendering mode for the same JSON data — switch between
+"tactic view" (what we have now) and "tree view" (Gentzen notation).
+
+### Implementation plan
+
+1. **Phase 1:** Add a proof theory explainer page that maps rules to tactics
+   (reference material, not interactive yet)
+2. **Phase 2:** Add tree rendering to the stepper component — derive the tree
+   structure from our JSON proof data (this is the "proof tree structure"
+   enhancement noted in the visualization research)
+3. **Phase 3:** Interactive tree builder — drag and drop inference rules to
+   construct proofs (like Incredible Proof Machine but connected to real provers)
+
+### Why this matters
+
+Natural deduction is the **lingua franca** of logic. Teaching it alongside Lean
+tactics means:
+- Students understand the universal structure, not just one tool's syntax
+- They can read logic textbooks and papers (which use Gentzen notation)
+- Transfer learning: understanding ∧-Intro in Gentzen means understanding
+  `constructor` in Lean, `split` in Coq, and `∧-intro` in Agda
+- The tree view would be genuinely novel as an interactive web tool
+
 ---
 
 ## KS2 SATs Revision Tool — Spin-off Project
