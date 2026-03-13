@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>if and only if — Learn Mathematics by Proving It</title>
-    <meta name="description" content="A progressive Lean 4 proof gym. Learn mathematics by writing formal proofs. From basic logic to real analysis.">
+    <meta name="description" content="Learn to prove things. Start with pure logic and Gentzen notation, then move to real theorem provers. From proof theory to real analysis.">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,8 @@
         <a href="/" class="logo">⟺ iff</a>
         <div class="nav-links">
             <a href="#tracks">Tracks</a>
-            <a href="roadmap.html">Roadmap</a>
+            <a href="reference.html">Reference</a>
+            <a href="what-is-a-proof.html">What is a proof?</a>
             <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
             <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
         </div>
@@ -24,12 +25,12 @@
 
     <header class="hero">
         <div class="hero-content">
-            <p class="hero-tag">A Lean 4 Proof Gym</p>
-            <h1>Learn mathematics<br>by proving it.</h1>
-            <p class="hero-sub">Progressive exercises in formal proof. Start from <code>True</code>, build to real analysis. You don't understand a theorem until you've proved it yourself.</p>
+            <p class="hero-tag">Prover-agnostic. Pen-and-paper to Lean 4.</p>
+            <h1>Learn to prove things.</h1>
+            <p class="hero-sub">Start with pure logic in Gentzen notation — no tools required. Then move to real theorem provers. You don't understand a theorem until you've proved it yourself.</p>
             <div class="hero-actions">
-                <a href="tracks/logic/index.html" class="btn btn-primary">Start with Logic</a>
-                <a href="#tracks" class="btn btn-secondary">Browse Tracks</a>
+                <a href="tracks/proof-theory/index.html" class="btn btn-primary">Start with Proof Theory</a>
+                <a href="tracks/logic/index.html" class="btn btn-secondary">I know logic already</a>
             </div>
         </div>
     </header>
@@ -44,13 +45,13 @@
             </div>
             <div class="step">
                 <div class="step-num">2</div>
-                <h3>Step through the proof</h3>
-                <p>Watch the proof state transform at each tactic. See hypotheses appear, goals narrow, subgoals split. Understand <em>why</em> each step works.</p>
+                <h3>Watch the proof unfold</h3>
+                <p>Watch the proof unfold — as a Gentzen inference tree or as tactic steps. See hypotheses appear, goals narrow, subgoals split. Understand <em>why</em> each step works.</p>
             </div>
             <div class="step">
                 <div class="step-num">3</div>
                 <h3>Prove it yourself</h3>
-                <p>Fill in the proof skeleton. Paste into <a href="https://live.lean-lang.org/" target="_blank">Lean 4 Web</a> or your local VS Code. If Lean accepts it, you've proved it.</p>
+                <p>Try it yourself — draw the inference tree on paper, or paste into <a href="https://live.lean-lang.org/" target="_blank">Lean 4 Web</a>. If you can build the tree or Lean accepts it, you've proved it.</p>
             </div>
         </div>
     </section>
@@ -77,6 +78,12 @@
                 <p>Peano axioms, induction, addition, multiplication, ordering.</p>
                 <span class="track-status">5 exercises</span>
             </a>
+            <a href="tracks/strategies/index.html" class="track-card track-available">
+                <div class="track-icon">&#x25B6; &#x2192; &#x2713;</div>
+                <h3>Proof Strategies</h3>
+                <p>How to choose tactics. Direct proof, case analysis, contradiction, induction, rewriting.</p>
+                <span class="track-status">8 exercises</span>
+            </a>
             <a href="tracks/sets/index.html" class="track-card track-coming">
                 <div class="track-icon">&#x2208; &#x222A; &#x2229;</div>
                 <h3>Sets</h3>
@@ -88,12 +95,6 @@
                 <h3>Functions</h3>
                 <p>Injectivity, surjectivity, composition, inverse functions.</p>
                 <span class="track-status">coming soon</span>
-            </a>
-            <a href="tracks/strategies/index.html" class="track-card track-available">
-                <div class="track-icon">&#x25B6; &#x2192; &#x2713;</div>
-                <h3>Proof Strategies</h3>
-                <p>How to choose tactics. Direct proof, case analysis, contradiction, induction, rewriting.</p>
-                <span class="track-status">8 exercises</span>
             </a>
             <a href="tracks/algebra/index.html" class="track-card track-coming">
                 <div class="track-icon">G &#xD7; H</div>
@@ -123,7 +124,7 @@
             </div>
             <div class="prereq">
                 <h3>Tools</h3>
-                <p>A browser. Use <a href="https://live.lean-lang.org/" target="_blank">Lean 4 Web</a> to check your proofs. Or install <a href="https://leanprover-community.github.io/get_started.html" target="_blank">Lean 4 + VS Code</a> locally for a better experience.</p>
+                <p>For Proof Theory: just pen and paper. For Lean exercises: use <a href="https://live.lean-lang.org/" target="_blank">Lean 4 Web</a> in your browser, or install <a href="https://leanprover-community.github.io/get_started.html" target="_blank">Lean 4 + VS Code</a> locally for a better experience.</p>
             </div>
         </div>
     </section>

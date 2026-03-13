@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is a proof? — if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / What is a proof?</p>
+        <h1>What is a proof?</h1>
+
+        <p>You already know what a proof is, loosely. "I can prove the earth is round" means you have evidence and arguments that would convince a reasonable person. That's fine for everyday life.</p>
+
+        <p>Mathematical proof is different. It's not about evidence, experiments, or persuasion. A proof is a chain of logical steps where each step follows from the previous ones by a clear, agreed-upon rule. Nothing more. If the rules are valid and you followed them correctly, the conclusion is guaranteed to be true. No wiggle room, no exceptions, no "well, actually."</p>
+
+        <p>Here's one you already understand:</p>
+
+        <ol style="color: var(--text); margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+            <li>If it's raining, the ground is wet.</li>
+            <li>It's raining.</li>
+            <li><strong>Therefore, the ground is wet.</strong></li>
+        </ol>
+
+        <p>That's it. You just used a rule of logic called <em>modus ponens</em>: if you know <code>P → Q</code> (P implies Q) and you know <code>P</code>, then you can conclude <code>Q</code>. Formal proof is just being very precise about which rules you're using at each step.</p>
+
+        <h2>Why bother being formal?</h2>
+
+        <p>Three reasons:</p>
+
+        <ol style="color: var(--text); margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+            <li><strong>Certainty.</strong> A formal proof cannot be wrong (if the rules are sound). Unlike empirical science, it doesn't need replication or peer review to be trusted. The logic itself is the guarantee.</li>
+            <li><strong>Computers can check it.</strong> Programs like Lean, Coq, and Agda verify proofs mechanically. If it compiles, it's correct. No human error, no hand-waving, no "the proof is left as an exercise."</li>
+            <li><strong>Understanding.</strong> Writing a proof forces you to understand exactly <em>why</em> something is true, not just <em>that</em> it is. You can't hide behind intuition.</li>
+        </ol>
+
+        <h2>What does a proof look like?</h2>
+
+        <p>Let's see the same modus ponens proof in three notations, from informal to fully formal.</p>
+
+        <h3 style="margin-top: 1.5rem;">1. English</h3>
+
+        <p style="padding: 1rem; background: var(--bg-card); border-radius: 8px; border-left: 3px solid var(--accent-dim);">If it's raining then the ground is wet. It's raining. Therefore the ground is wet.</p>
+
+        <p>Clear, but imprecise. Which rule did we use? What exactly are the premises? A reader has to figure that out themselves.</p>
+
+        <h3 style="margin-top: 1.5rem;">2. Gentzen-style natural deduction</h3>
+
+        <p>This is the notation we start with on this site. Premises go on top, the conclusion goes below a horizontal bar, and the rule name sits on the right:</p>
+
+        <pre style="text-align: center; padding: 1.5rem; background: var(--bg-card); border-radius: 8px; font-size: 1.1rem; line-height: 1.8;">
+  P      P → Q
+————————————————  →-Elim
+       Q</pre>
+
+        <p>Read it as: "Given <code>P</code> and <code>P → Q</code>, we may conclude <code>Q</code> by the rule of implication elimination." Every step names its rule. Nothing is implicit.</p>
+
+        <h3 style="margin-top: 1.5rem;">3. In Lean 4</h3>
+
+        <p>This is what we'll work up to. Lean is a programming language and proof assistant. Here's the same proof:</p>
+
+        <pre style="padding: 1.5rem; background: var(--code-bg); border-radius: 8px; font-size: 0.95rem; line-height: 1.6;"><code>theorem ground_wet (raining : P) (rain_means_wet : P → Q) : Q := by
+  exact rain_means_wet raining</code></pre>
+
+        <p>The <code>exact</code> tactic tells Lean: "apply <code>rain_means_wet</code> to <code>raining</code> and that gives us <code>Q</code>." Lean checks this mechanically. If there's an error in the logic, it won't compile.</p>
+
+        <p>Don't worry if the Lean syntax looks alien. You'll get there. The point is that all three notations express the same logical step.</p>
+
+        <h2>Where to start</h2>
+
+        <p>Pick the path that fits your background:</p>
+
+        <ul style="color: var(--text); margin: 1rem 0 1.5rem 1.5rem; line-height: 2.2;">
+            <li><strong>I've never seen any of this before.</strong> Start with the <a href="tracks/proof-theory/index.html">Proof Theory track</a>. It introduces the rules of logic one at a time, with no programming required.</li>
+            <li><strong>I know basic logic but not Lean.</strong> Start with the <a href="tracks/logic/index.html">Logic track</a>. It translates what you already know into Lean 4 proofs.</li>
+            <li><strong>I've used a theorem prover before.</strong> Jump straight to <a href="tracks/strategies/index.html">Strategies</a> for proof techniques like contradiction, induction, and case analysis.</li>
+        </ul>
+
+        <div class="exercise-nav">
+            <a href="/">&larr; Home</a>
+            <a href="tracks/proof-theory/index.html">Start with Proof Theory &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inference Rules &mdash; Reference &mdash; if and only if</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟺</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">&#x27FA; iff</a>
+        <div class="nav-links">
+            <a href="/#tracks">Tracks</a>
+            <a href="roadmap.html">Roadmap</a>
+            <a href="https://live.lean-lang.org/" target="_blank" rel="noopener">Lean 4 Web</a>
+            <a href="https://github.com/cptfinch/ifandonlyif.xyz" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </nav>
+
+    <div class="exercise-page">
+        <p class="breadcrumb"><a href="/">Home</a> / Reference</p>
+
+        <h1>Inference Rules &mdash; Reference</h1>
+
+        <p>Every rule of natural deduction, in four notations. Bookmark this page.</p>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <h2>Implication (&rarr;)</h2>
+        <!-- ═══════════════════════════════════════════ -->
+
+        <h3>&rarr;-Intro (Conditional proof)</h3>
+
+<pre>  [P]&sup1;
+   &vellip;
+   Q
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &rarr;-Intro&sup1;
+ P &rarr; Q</pre>
+
+        <table>
+            <tr><th>Rule</th><th>Lean 4</th><th>Coq</th><th>Agda</th></tr>
+            <tr>
+                <td>&rarr;-Intro</td>
+                <td><code>intro h</code></td>
+                <td><code>intro H</code></td>
+                <td><code>&lambda; h &rarr;</code></td>
+            </tr>
+        </table>
+
+        <p>To prove P &rarr; Q: assume P, derive Q.</p>
+
+        <p class="track-desc" style="font-size: 0.9rem;"><strong>Practice:</strong> <a href="tracks/proof-theory/01-implication-intro.html">Proof Theory &sect;01</a></p>
+
+        <!-- ─────────────────────────────────────────── -->
+
+        <h3>&rarr;-Elim (Modus ponens)</h3>
+
+<pre> P    P &rarr; Q
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &rarr;-Elim
+      Q</pre>
+
+        <table>
+            <tr><th>Rule</th><th>Lean 4</th><th>Coq</th><th>Agda</th></tr>
+            <tr>
+                <td>&rarr;-Elim</td>
+                <td><code>exact h hp</code> or <code>apply h</code></td>
+                <td><code>apply H</code></td>
+                <td><code>h hp</code></td>
+            </tr>
+        </table>
+
+        <p>If you have P and P &rarr; Q, conclude Q.</p>
+
+        <p class="track-desc" style="font-size: 0.9rem;"><strong>Practice:</strong> <a href="tracks/proof-theory/02-modus-ponens.html">Proof Theory &sect;02</a></p>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <h2>Conjunction (&and;)</h2>
+        <!-- ═══════════════════════════════════════════ -->
+
+        <h3>&and;-Intro</h3>
+
+<pre>  P       Q
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &and;-Intro
+   P &and; Q</pre>
+
+        <table>
+            <tr><th>Rule</th><th>Lean 4</th><th>Coq</th><th>Agda</th></tr>
+            <tr>
+                <td>&and;-Intro</td>
+                <td><code>constructor</code> or <code>exact &langle;hp, hq&rangle;</code></td>
+                <td><code>split</code></td>
+                <td><code>hp , hq</code></td>
+            </tr>
+        </table>
+
+        <p>To prove P &and; Q: prove P and prove Q separately.</p>
+
+        <p class="track-desc" style="font-size: 0.9rem;"><strong>Practice:</strong> <a href="tracks/proof-theory/04-conjunction-intro.html">Proof Theory &sect;04</a></p>
+
+        <!-- ─────────────────────────────────────────── -->
+
+        <h3>&and;-Elim&sub1; and &and;-Elim&sub2;</h3>
+
+<pre> P &and; Q              P &and; Q
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &and;-Elim&sub1;     &mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &and;-Elim&sub2;
+   P                  Q</pre>
+
+        <table>
+            <tr><th>Rule</th><th>Lean 4</th><th>Coq</th><th>Agda</th></tr>
+            <tr>
+                <td>&and;-Elim&sub1;</td>
+                <td><code>exact h.1</code></td>
+                <td><code>destruct H as [HP HQ]</code></td>
+                <td><code>proj&sub1; h</code></td>
+            </tr>
+            <tr>
+                <td>&and;-Elim&sub2;</td>
+                <td><code>exact h.2</code></td>
+                <td><code>destruct H as [HP HQ]</code></td>
+                <td><code>proj&sub2; h</code></td>
+            </tr>
+        </table>
+
+        <p>From P &and; Q, extract P (project left) or Q (project right).</p>
+
+        <p class="track-desc" style="font-size: 0.9rem;"><strong>Practice:</strong> <a href="tracks/proof-theory/05-conjunction-elim.html">Proof Theory &sect;05</a></p>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <h2>Disjunction (&or;)</h2>
+        <!-- ═══════════════════════════════════════════ -->
+
+        <h3>&or;-Intro&sub1; and &or;-Intro&sub2;</h3>
+
+<pre>    P                   Q
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &or;-Intro&sub1;    &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &or;-Intro&sub2;
+  P &or; Q              P &or; Q</pre>
+
+        <table>
+            <tr><th>Rule</th><th>Lean 4</th><th>Coq</th><th>Agda</th></tr>
+            <tr>
+                <td>&or;-Intro&sub1;</td>
+                <td><code>exact Or.inl hp</code></td>
+                <td><code>left</code></td>
+                <td><code>inj&sub1; hp</code></td>
+            </tr>
+            <tr>
+                <td>&or;-Intro&sub2;</td>
+                <td><code>exact Or.inr hq</code></td>
+                <td><code>right</code></td>
+                <td><code>inj&sub2; hq</code></td>
+            </tr>
+        </table>
+
+        <p>To prove P &or; Q, it suffices to prove P alone (inject left) or Q alone (inject right).</p>
+
+        <p class="track-desc" style="font-size: 0.9rem;"><strong>Practice:</strong> <a href="tracks/proof-theory/06-disjunction-intro.html">Proof Theory &sect;06</a></p>
+
+        <!-- ─────────────────────────────────────────── -->
+
+        <h3>&or;-Elim (Case analysis)</h3>
+
+<pre>            [P]&sup1;    [Q]&sup2;
+             &vellip;       &vellip;
+ P &or; Q      R       R
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &or;-Elim&sup1;&sdot;&sup2;
+            R</pre>
+
+        <table>
+            <tr><th>Rule</th><th>Lean 4</th><th>Coq</th><th>Agda</th></tr>
+            <tr>
+                <td>&or;-Elim</td>
+                <td><code>rcases h with hp | hq</code></td>
+                <td><code>destruct H as [HP | HQ]</code></td>
+                <td>pattern matching with two clauses</td>
+            </tr>
+        </table>
+
+        <p>If you have P &or; Q, and both P &rarr; R and Q &rarr; R, then R.</p>
+
+        <p class="track-desc" style="font-size: 0.9rem;"><strong>Practice:</strong> <a href="tracks/proof-theory/07-disjunction-elim.html">Proof Theory &sect;07</a></p>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <h2>Negation (&not;)</h2>
+        <!-- ═══════════════════════════════════════════ -->
+
+        <h3>&not;-Intro</h3>
+
+<pre> [P]&sup1;
+  &vellip;
+  &perp;
+&mdash;&mdash;&mdash;&mdash;&mdash; &not;-Intro&sup1;
+ &not;P</pre>
+
+        <table>
+            <tr><th>Rule</th><th>Lean 4</th><th>Coq</th><th>Agda</th></tr>
+            <tr>
+                <td>&not;-Intro</td>
+                <td><code>intro h</code> (since &not;P = P &rarr; False)</td>
+                <td><code>intro H</code></td>
+                <td><code>&lambda; h &rarr; &hellip;</code></td>
+            </tr>
+        </table>
+
+        <p>&not;P means P &rarr; &perp;. To prove &not;P: assume P, derive a contradiction.</p>
+
+        <p class="track-desc" style="font-size: 0.9rem;"><strong>Practice:</strong> <a href="tracks/proof-theory/08-negation-intro.html">Proof Theory &sect;08</a></p>
+
+        <!-- ─────────────────────────────────────────── -->
+
+        <h3>&perp;-Elim (Ex falso quodlibet)</h3>
+
+<pre>  &perp;
+&mdash;&mdash;&mdash;&mdash;&mdash; &perp;-Elim
+  P</pre>
+
+        <table>
+            <tr><th>Rule</th><th>Lean 4</th><th>Coq</th><th>Agda</th></tr>
+            <tr>
+                <td>&perp;-Elim</td>
+                <td><code>exact absurd hp hnp</code> or <code>contradiction</code></td>
+                <td><code>contradiction</code> or <code>exfalso</code></td>
+                <td><code>&perp;-elim</code></td>
+            </tr>
+        </table>
+
+        <p>From &perp; (absurdity), derive anything. <em>Ex falso quodlibet.</em></p>
+
+        <p class="track-desc" style="font-size: 0.9rem;"><strong>Practice:</strong> <a href="tracks/proof-theory/09-ex-falso.html">Proof Theory &sect;09</a></p>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <h2>Quantifiers (&forall;, &exist;)</h2>
+        <!-- ═══════════════════════════════════════════ -->
+
+        <p style="color: var(--text-muted); font-style: italic;">Exercises coming soon. The rules are shown here for reference.</p>
+
+        <h3>&forall;-Intro and &forall;-Elim</h3>
+
+<pre>  P(a)                &forall;x. P(x)
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &forall;-Intro*    &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &forall;-Elim
+&forall;x. P(x)              P(t)
+
+* a must not appear free in any
+  undischarged assumption</pre>
+
+        <table>
+            <tr><th>Rule</th><th>Lean 4</th><th>Coq</th><th>Agda</th></tr>
+            <tr>
+                <td>&forall;-Intro</td>
+                <td><code>intro x</code></td>
+                <td><code>intro x</code></td>
+                <td><code>&lambda; x &rarr;</code></td>
+            </tr>
+            <tr>
+                <td>&forall;-Elim</td>
+                <td><code>exact h t</code> or <code>specialize h t</code></td>
+                <td><code>specialize H t</code> or <code>apply H</code></td>
+                <td><code>h t</code></td>
+            </tr>
+        </table>
+
+        <p>&forall;-Intro: to prove &forall;x. P(x), let x be arbitrary and prove P(x). The variable must be fresh. &forall;-Elim: from &forall;x. P(x), substitute any specific term t to get P(t).</p>
+
+        <!-- ─────────────────────────────────────────── -->
+
+        <h3>&exist;-Intro and &exist;-Elim</h3>
+
+<pre>  P(t)                         [P(a)]&sup1;
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &exist;-Intro               &vellip;
+&exist;x. P(x)            &exist;x. P(x)    C
+                     &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; &exist;-Elim&sup1;
+                              C
+
+                     * a must not appear free in C
+                       or any undischarged assumption</pre>
+
+        <table>
+            <tr><th>Rule</th><th>Lean 4</th><th>Coq</th><th>Agda</th></tr>
+            <tr>
+                <td>&exist;-Intro</td>
+                <td><code>exact &langle;t, ht&rangle;</code> or <code>use t</code></td>
+                <td><code>exists t</code></td>
+                <td><code>t , ht</code></td>
+            </tr>
+            <tr>
+                <td>&exist;-Elim</td>
+                <td><code>obtain &langle;a, ha&rangle; := h</code></td>
+                <td><code>destruct H as [a Ha]</code></td>
+                <td>pattern matching</td>
+            </tr>
+        </table>
+
+        <p>&exist;-Intro: to prove &exist;x. P(x), provide a specific witness t and a proof of P(t). &exist;-Elim: from &exist;x. P(x), introduce a fresh name a and assume P(a), then derive C (where a does not appear in C).</p>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <h2>Notation guide</h2>
+        <!-- ═══════════════════════════════════════════ -->
+
+        <table>
+            <tr><th>Symbol</th><th>Meaning</th></tr>
+            <tr>
+                <td>horizontal bar &mdash;&mdash;&mdash;</td>
+                <td>From the above (premises), conclude the below (conclusion). This is the core of each inference rule.</td>
+            </tr>
+            <tr>
+                <td>[P]<sup>n</sup></td>
+                <td>A <em>discharged assumption</em>. P was temporarily assumed during the derivation and is no longer needed after the rule labelled <sup>n</sup> fires.</td>
+            </tr>
+            <tr>
+                <td>&vdash;</td>
+                <td>"We can prove" &mdash; the turnstile. &Gamma; &vdash; P means "from assumptions &Gamma;, we can prove P."</td>
+            </tr>
+            <tr>
+                <td>&perp;</td>
+                <td>Absurdity / falsehood. A proposition with no proof. Reaching &perp; signals a contradiction.</td>
+            </tr>
+            <tr>
+                <td>&vellip;</td>
+                <td>A sub-derivation &mdash; one or more intermediate steps omitted for brevity.</td>
+            </tr>
+        </table>
+
+        <div class="exercise-nav">
+            <a href="/">&larr; Home</a>
+            <a href="tracks/proof-theory/index.html">Proof Theory &rarr;</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>if and only if</strong> is open source. <a href="https://github.com/cptfinch/ifandonlyif.xyz">Contribute on GitHub.</a></p>
+        <p class="footer-sub">An <a href="https://adjoint.uk">Adjoint</a> project.</p>
+    </footer>
+</body>
+</html>
