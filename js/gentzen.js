@@ -231,6 +231,17 @@ const GentzenTree = (() => {
         if (idx < state.maxVisited) line.classList.add('line-visited');
       });
 
+      // Completion celebration
+      if (s.qed && state.step > 0) {
+        const prevStep = steps[state.step - 1];
+        if (prevStep && !prevStep.qed) {
+          root.classList.add('stepper-completed');
+          if (typeof Progress !== 'undefined' && Progress.markCompleted) {
+            Progress.markCompleted();
+          }
+        }
+      }
+
       // Tree — render the partial tree for this step
       treeArea.innerHTML = '';
       if (s.tree) {

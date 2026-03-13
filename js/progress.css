@@ -1,0 +1,105 @@
+/* Progress tracking & gamification */
+
+/* ─── Completion celebration on stepper ─── */
+
+.stepper-completed {
+    border-color: #5cb85c;
+    animation: stepper-celebrate 0.6s ease;
+}
+
+@keyframes stepper-celebrate {
+    0% { border-color: var(--border); }
+    30% { border-color: #5cb85c; box-shadow: 0 0 20px rgba(92, 184, 92, 0.3); }
+    60% { box-shadow: 0 0 30px rgba(92, 184, 92, 0.15); }
+    100% { border-color: #5cb85c; box-shadow: none; }
+}
+
+.stepper-completed .goal-qed-symbol {
+    animation: qed-bounce 0.5s ease 0.1s;
+}
+
+@keyframes qed-bounce {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.4); }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+/* ─── Exercise list badges ─── */
+
+.ex-badge {
+    margin-left: auto;
+    font-size: 1rem;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.ex-badge-complete {
+    background: #5cb85c;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.ex-badge-visited {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+/* Override difficulty display when badge is present */
+.exercise-list a:has(.ex-badge) .ex-difficulty {
+    margin-left: 0;
+}
+
+/* ─── Track progress bar ─── */
+
+.track-progress {
+    margin-bottom: 2rem;
+}
+
+.track-progress-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 0.4rem;
+}
+
+.track-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #5cb85c);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+    min-width: 0;
+}
+
+.track-progress-label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+/* ─── Streak display ─── */
+
+.streak-display {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.streak-fire {
+    font-size: 1.1rem;
+}
+
+/* ─── Homepage track card progress ─── */
+
+.track-card .track-status {
+    transition: all 0.2s;
+}

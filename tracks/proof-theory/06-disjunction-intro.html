@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../../style.css">
     <link rel="stylesheet" href="../../js/stepper.css">
     <link rel="stylesheet" href="../../js/gentzen.css">
+    <link rel="stylesheet" href="../../js/progress.css">
 </head>
 <body>
     <nav>
@@ -94,5 +95,6 @@ P &rarr; P &or; Q</pre>
       .then(r => r.json())
       .then(data => GentzenTree.mountStepper('disj-intro-stepper', data));
     </script>
+    <script src="../../js/progress.js"></script>
 </body>
 </html>

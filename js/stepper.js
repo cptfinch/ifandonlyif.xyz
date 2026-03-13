@@ -190,6 +190,15 @@ const ProofStepper = (() => {
         const txt = document.createTextNode('No goals. QED');
         qed.append(sym, txt);
         goalList.appendChild(qed);
+
+        // Completion celebration — only on first arrival at QED
+        if (prev && !prev.qed) {
+          root.classList.add('stepper-completed');
+          // Notify progress tracker
+          if (typeof Progress !== 'undefined' && Progress.markCompleted) {
+            Progress.markCompleted();
+          }
+        }
         return;
       }
 
